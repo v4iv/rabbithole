@@ -1,13 +1,31 @@
 ---
-import Logo from "@/assets/logo.svg"
+import HeroImage from "@/assets/hero.svg"
 import Layout from "@/layouts/Layout.astro"
+import Links from "@/components/Links.astro"
 ---
 
 <Layout>
-  <main class="min-h-screen">
-    <div class="flex items-center justify-center gap-4">
-      <Logo height={64} width={64} />
-      <h1 class="font-sans text-2xl">RabbitHole Art Studio</h1>
+  <main class="relative">
+    <div class="flex min-h-screen items-center justify-center">
+      <div class="relative container mx-auto p-5">
+        <!-- hero -->
+        <HeroImage />
+
+        <!-- subtitle -->
+        <div class="mt-5 flex items-center justify-end">
+          by&nbsp;<a
+            target="_blank"
+            href="https://instagram.com/its_eshale"
+            rel="noopener nofollow"
+            class="border-b border-dashed font-serif text-2xl italic hover:text-teal-400"
+          >
+            eshale
+          </a>
+        </div>
+      </div>
     </div>
+
+    <!-- links -->
+    <Links />
   </main>
 </Layout>
