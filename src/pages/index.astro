@@ -10,7 +10,7 @@ const t = useTranslations(lang)
 
 <Layout>
   <main class="relative">
-    <div class="flex min-h-screen items-center justify-center">
+    <section class="flex min-h-screen items-center justify-center">
       <div class="relative container mx-auto p-5">
         <!-- hero -->
         <HeroImage />
@@ -27,9 +27,22 @@ const t = useTranslations(lang)
           </a>
         </div>
       </div>
-    </div>
-
+    </section>
     <!-- links -->
     <Links />
+    <!-- credits -->
+    <footer class="absolute right-1 bottom-0.5 flex w-full justify-end">
+      <a
+        href="https://waybove.pages.dev"
+        class="font-mono text-xs lowercase"
+        target="_blank"
+        rel="noopener nofollow"
+      >
+        designed by&nbsp;<span
+          class="font-bold text-blue-900 hover:border-b hover:border-dotted"
+          >Waybove</span
+        >
+      </a>
+    </footer>
   </main>
 </Layout>
