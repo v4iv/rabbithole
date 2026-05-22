@@ -1,0 +1,40 @@
+content:
+  - name: ui
+    label: UI
+    type: file
+    path: src/content/translations/ui.json
+    fields:
+      - name: en
+        label: English
+        type: object
+        fields:
+          - name: app.name
+            label: App Name
+            type: string
+          - name: app.shortname
+            label: App Shortname
+            type: string
+          - name: title
+            label: Title
+            type: string
+          - name: description
+            label: Description
+            type: string
+          - name: signature.by
+            label: Signature By
+            type: string
+          - name: signature.name
+            label: Signature Name
+            type: string
+          - name: instagram
+            label: Instagram
+            type: string
+          - name: whatsapp
+            label: WhatsApp
+            type: string
+          - name: email
+            label: Email
+            type: string
+          - name: maps
+            label: Google Maps
+            type: string
