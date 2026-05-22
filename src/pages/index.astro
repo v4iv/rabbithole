@@ -1,6 +1,5 @@
 ---
 import HeroImage from "@/assets/hero.svg"
-import ExternalLinkIcon from "@/assets/external-link.svg"
 import Navbar from "@/components/Navbar.astro"
 import Layout from "@/layouts/Layout.astro"
 import Links from "@/components/Links.astro"
@@ -30,7 +29,20 @@ const t = useTranslations(lang)
               class="border-b border-dashed font-serif text-2xl italic hover:text-teal-400"
               >{t("signature-name")}</span
             >
-            <ExternalLinkIcon class="size-3" />
+            <svg
+              class="size-3"
+              role="presentation"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                d="M9.996 1.532l.008 1 2.779-.022-4.136 4.136.707.707 4.136-4.136-.023 2.779 1 .008.037-4.508-4.508.036z"
+              ></path>
+              <path d="M12 12H4V4h4.5V3h-5l-.5.5v9l.5.5h9l.5-.5v-5h-1V12z"
+              ></path>
+            </svg>
           </a>
         </div>
       </div>
