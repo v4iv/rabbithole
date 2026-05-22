@@ -1,4 +1,5 @@
 ---
+import Analytics from "@/components/Analytics.astro"
 import BaseHead from "@/components/Head.astro"
 import { getLangFromUrl, useTranslations } from "@/i18n/utils"
 
@@ -8,7 +9,10 @@ const t = useTranslations(lang)
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
-  <head><BaseHead title={t("title")} description={t("description")} /></head>
+  <head>
+    <BaseHead title={t("title")} description={t("description")} />
+    <Analytics googleAnalyticsID={import.meta.env.PUBLIC_GTA_ID} />
+  </head>
   <body
     class="antialiased"
     style={{

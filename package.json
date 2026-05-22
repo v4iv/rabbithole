@@ -13,6 +13,7 @@
     "clean": "rimraf .astro/ dist/"
   },
   "dependencies": {
+    "@astrojs/partytown": "^2.1.7",
     "@astrojs/sitemap": "^3.7.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.3.0",
