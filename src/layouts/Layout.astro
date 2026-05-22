@@ -1,10 +1,14 @@
 ---
 import BaseHead from "@/components/Head.astro"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
-  <head><BaseHead /></head>
+  <head><BaseHead title={t("title")} description={t("description")} /></head>
   <body
     class="antialiased"
     style={{

@@ -2,6 +2,10 @@
 import HeroImage from "@/assets/hero.svg"
 import Layout from "@/layouts/Layout.astro"
 import Links from "@/components/Links.astro"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <Layout>
@@ -12,14 +16,14 @@ import Links from "@/components/Links.astro"
         <HeroImage />
 
         <!-- subtitle -->
-        <div class="mt-5 flex items-center justify-end">
-          by&nbsp;<a
+        <div class="mt-5 flex items-start justify-end">
+          {t("signature.by")}&nbsp;<a
             target="_blank"
             href="https://instagram.com/its_eshale"
             rel="noopener nofollow"
             class="border-b border-dashed font-serif text-2xl italic hover:text-teal-400"
           >
-            eshale
+            {t("signature.name")}
           </a>
         </div>
       </div>
