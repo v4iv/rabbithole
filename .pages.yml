@@ -8,10 +8,10 @@ content:
         label: English
         type: object
         fields:
-          - name: app.name
+          - name: app-name
             label: App Name
             type: string
-          - name: app.shortname
+          - name: app-shortname
             label: App Shortname
             type: string
           - name: title
@@ -20,10 +20,10 @@ content:
           - name: description
             label: Description
             type: string
-          - name: signature.by
+          - name: signature-by
             label: Signature By
             type: string
-          - name: signature.name
+          - name: signature-name
             label: Signature Name
             type: string
           - name: instagram
