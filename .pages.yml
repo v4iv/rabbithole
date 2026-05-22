@@ -20,6 +20,9 @@ content:
           - name: description
             label: Description
             type: string
+          - name: summer-camp-cta
+            label: Summer Camp CTA
+            type: string
           - name: signature-by
             label: Signature By
             type: string
