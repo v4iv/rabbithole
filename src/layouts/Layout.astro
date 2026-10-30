@@ -10,6 +10,9 @@ const t = useTranslations(lang)
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
+    <script is:inline>
+      document.documentElement.classList.add("js-ready")
+    </script>
     <BaseHead title={t("title")} description={t("description")} />
     <Analytics googleAnalyticsID={import.meta.env.PUBLIC_GTAG_ID} />
   </head>

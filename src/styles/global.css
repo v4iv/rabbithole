@@ -2,3 +2,43 @@
 
 @plugin "@tailwindcss/typography";
 
+/* Zero FOUC: Hide animated elements before GSAP takes over (only if JS enabled and no reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  html.js-ready:not(.gsap-animated) .hero-group-rabbithole,
+  html.js-ready:not(.gsap-animated) .hero-group-art,
+  html.js-ready:not(.gsap-animated) .hero-group-studio,
+  html.js-ready:not(.gsap-animated) .hero-subtitle,
+  html.js-ready:not(.gsap-animated) .social-link-btn,
+  html.js-ready:not(.gsap-animated) .page-footer {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Ambient watercolor cursor glow */
+.cursor-glow {
+  background: radial-gradient(
+    600px circle at var(--glow-x, 50vw) var(--glow-y, 50vh),
+    rgba(236, 116, 226, 0.09) 0%,
+    rgba(144, 132, 229, 0.06) 30%,
+    rgba(166, 249, 144, 0.04) 55%,
+    transparent 75%
+  );
+}
+
+/* 3D stage and SVG layer optimizations */
+.hero-container {
+  transform-style: preserve-3d;
+}
+
+.hero-svg {
+  overflow: visible;
+}
+
+.hero-group-art,
+.hero-group-studio,
+.hero-group-rabbithole {
+  transform-box: fill-box;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}

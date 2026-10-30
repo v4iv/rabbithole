@@ -6,11 +6,15 @@ import { loadEnv } from "vite"
 
 import partytown from "@astrojs/partytown"
 
-const { URL } = loadEnv(import.meta.env.MODE, process.cwd(), "")
+const { URL = "https://rabbitholeartstudio.com" } = loadEnv(
+  import.meta.env.MODE,
+  process.cwd(),
+  "",
+)
 
 // https://astro.build/config
 export default defineConfig({
-  site: URL,
+  site: URL || "https://rabbitholeartstudio.com",
   experimental: {
     svgOptimizer: svgoOptimizer(),
   },
@@ -28,4 +32,3 @@ export default defineConfig({
     }),
   ],
 })
-

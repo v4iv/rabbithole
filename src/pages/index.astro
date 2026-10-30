@@ -10,38 +10,41 @@ const t = useTranslations(lang)
 ---
 
 <Layout>
-  <main class="relative">
+  <main class="relative min-h-screen overflow-x-hidden">
+    <!-- Ambient watercolor cursor glow -->
+    <div
+      class="cursor-glow pointer-events-none fixed inset-0 z-0 opacity-0"
+      aria-hidden="true"
+    ></div>
+
     <Navbar />
-    <section class="flex min-h-screen items-center justify-center">
-      <div class="relative container mx-auto p-5">
+    <section class="relative z-10 flex min-h-screen items-center justify-center">
+      <div class="hero-container relative container mx-auto p-5 will-change-transform">
         <!-- hero -->
-        <HeroImage />
+        <HeroImage class="hero-svg w-full select-none" />
 
         <!-- subtitle -->
-        <div class="mt-5 flex items-start justify-end">
-          {t("signature-by")}&nbsp;<a
+        <div class="hero-subtitle mt-5 flex items-start justify-end">
+          {t("signature-by")}&nbsp;
+          <a
             target="_blank"
             href="https://instagram.com/its_eshale"
             rel="noopener nofollow"
-            class="flex items-start gap-1"
+            class="signature-link group flex items-start gap-1"
           >
-            <span
-              class="border-b border-dashed font-serif text-2xl italic hover:text-teal-400"
-              >{t("signature-name")}</span
-            >
+            <span class="signature-text border-b border-dashed font-serif text-2xl italic transition-colors hover:text-teal-400">
+              {t("signature-name")}
+            </span>
             <svg
-              class="size-3"
+              class="signature-arrow size-3 transition-transform"
               role="presentation"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               aria-hidden="true"
               focusable="false"
             >
-              <path
-                d="M9.996 1.532l.008 1 2.779-.022-4.136 4.136.707.707 4.136-4.136-.023 2.779 1 .008.037-4.508-4.508.036z"
-              ></path>
-              <path d="M12 12H4V4h4.5V3h-5l-.5.5v9l.5.5h9l.5-.5v-5h-1V12z"
-              ></path>
+              <path d="M9.996 1.532l.008 1 2.779-.022-4.136 4.136.707.707 4.136-4.136-.023 2.779 1 .008.037-4.508-4.508.036z"></path>
+              <path d="M12 12H4V4h4.5V3h-5l-.5.5v9l.5.5h9l.5-.5v-5h-1V12z"></path>
             </svg>
           </a>
         </div>
@@ -50,18 +53,20 @@ const t = useTranslations(lang)
     <!-- links -->
     <Links />
     <!-- credits -->
-    <footer class="absolute right-5 bottom-0.5 flex w-full justify-end">
+    <footer class="page-footer pointer-events-none absolute right-5 bottom-0.5 z-20 flex w-full justify-end">
       <a
         href="https://waybove.pages.dev"
-        class="font-mono text-xs lowercase"
+        class="pointer-events-auto font-mono text-xs lowercase"
         target="_blank"
         rel="noopener nofollow"
       >
-        designed by&nbsp;<span
-          class="font-bold text-blue-900 hover:border-b hover:border-dotted"
-          >vaibhav</span
-        >
+        designed by&nbsp;
+        <span class="font-bold text-blue-900 hover:border-b hover:border-dotted">
+          vaibhav
+        </span>
       </a>
     </footer>
   </main>
 </Layout>
+
+<script src="@/scripts/animations.ts"></script>
