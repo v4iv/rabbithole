@@ -1,0 +1,325 @@
+---
+import * as artworksDoc from "@/content/artworks.md"
+import type { Artwork } from "@/types/artwork"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const artworks: Artwork[] = ((artworksDoc as any).frontmatter?.artworks ||
+  []) as Artwork[]
+const totalArtworks = artworks.length
+const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
+---
+
+<section
+  id="catalogue"
+  class="catalogue-section relative z-10 w-full min-h-screen lg:h-screen lg:max-h-screen flex flex-col justify-between bg-neutral-50/60 py-4 sm:py-6 lg:py-6 border-t border-neutral-900/10 overflow-hidden"
+>
+  <!-- Editorial Masthead Header -->
+  <div class="container mx-auto px-4 sm:px-8 mb-6 sm:mb-8 shrink-0">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-neutral-900/15">
+      <div>
+        <div class="flex items-center gap-3 mb-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <span class="inline-block size-2 rounded-full bg-purple-500 animate-pulse"></span>
+          <span>{t("catalogue-vol")}</span>
+          <span class="text-neutral-300">/</span>
+          <span>{t("catalogue-season")}</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl uppercase tracking-tight text-neutral-900">
+          {t("catalogue-title")}
+        </h2>
+      </div>
+
+      <!-- Plate Counter (Header) -->
+      <div class="flex items-center gap-4">
+        <div class="font-mono text-xs text-neutral-600 tracking-wider">
+          {t("catalogue-plate")}{" "}
+          <span
+            id="active-plate-index"
+            class="font-bold text-neutral-950 font-mono text-sm sm:text-base"
+          >
+            01
+          </span>{" "}
+          / {totalPlatesDisplay}
+        </div>
+      </div>
+    </div>
+
+    <!-- Editorial Subhead Strip -->
+    <div class="mt-3 flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-wider text-neutral-500">
+      <span>{t("catalogue-mediums-strip")}</span>
+      <span class="hidden sm:inline">{t("catalogue-nav-cue")}</span>
+    </div>
+  </div>
+
+  <!-- Carousel Wrapper (Centered in Viewport) -->
+  <div class="catalogue-carousel-wrapper relative w-full flex-1 flex items-center min-h-0">
+    <!-- Lookbook Track Viewport -->
+    <div class="catalogue-viewport relative w-full overflow-hidden">
+      <div
+        id="catalogue-track"
+        class="catalogue-track flex flex-nowrap items-stretch gap-5 sm:gap-8 px-6 sm:px-12 lg:px-16 pb-2 will-change-transform"
+      >
+        <!-- Introductory Editorial Card -->
+        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[60vh] max-h-[540px] min-h-[380px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-white/90 shadow-xs">
+          <div>
+            <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
+              {t("foreword-tag")}
+            </span>
+            <h3 class="font-serif text-xl sm:text-2xl lg:text-3xl italic text-neutral-900 mb-4 leading-tight">
+              {t("foreword-quote")}
+            </h3>
+            <p class="font-serif text-xs sm:text-sm text-neutral-600 leading-relaxed line-clamp-6">
+              {t("foreword-text")}
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-neutral-900/10 mt-6 flex items-center justify-between font-mono text-xs text-neutral-500">
+            <span>{t("foreword-dir")}</span>
+            <span>{t("foreword-est")}</span>
+          </div>
+        </div>
+
+        <!-- Artwork Cards -->
+        {artworks.map((artwork, idx) => (
+          <article
+            class="catalogue-card group shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[380px] xl:w-[420px] h-[60vh] max-h-[540px] min-h-[380px] flex flex-col justify-between border border-neutral-900/10 bg-white transition-all duration-300 hover:border-neutral-900/30 hover:shadow-lg overflow-hidden"
+            data-index={String(idx + 1).padStart(2, "0")}
+            data-id={artwork.id}
+          >
+            <!-- Card Header: Numbering & Year -->
+            <div class="flex items-center justify-between px-4 sm:px-5 py-2.5 border-b border-neutral-900/10 font-mono text-xs uppercase tracking-wider text-neutral-500 shrink-0">
+              <span class="font-serif text-sm sm:text-base font-bold italic text-neutral-900">
+                Nº {artwork.number}
+              </span>
+              <span>{artwork.year}</span>
+            </div>
+
+            <!-- Responsive Image Frame -->
+            <div
+              class="artwork-frame relative flex-1 min-h-[180px] sm:min-h-[220px] w-full overflow-hidden bg-neutral-100 cursor-pointer"
+              data-artwork-id={artwork.id}
+            >
+              <img
+                src={artwork.image}
+                alt={artwork.alt}
+                loading="lazy"
+                decoding="async"
+                class="artwork-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+              />
+
+              <!-- Chic Hover Overlay Pill -->
+              <div class="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-950/20 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+                <span class="rounded-full bg-white/95 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-900 shadow-md">
+                  {t("expand-plate")}
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body / Typography -->
+            <div class="flex flex-col justify-between p-4 sm:p-5 shrink-0 bg-white">
+              <div>
+                <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 block mb-0.5">
+                  {artwork.subtitle}
+                </span>
+                <h4 class="font-serif text-xl sm:text-2xl text-neutral-900 mb-1 line-clamp-1 group-hover:text-purple-900 transition-colors">
+                  {artwork.title}
+                </h4>
+                <p class="font-mono text-[11px] text-neutral-500 mb-2 line-clamp-1">
+                  {artwork.medium} · {artwork.dimensions}
+                </p>
+                <p class="font-serif text-xs italic text-neutral-600 line-clamp-2 leading-relaxed">
+                  "{artwork.quote}"
+                </p>
+              </div>
+
+              <div class="mt-3 pt-3 border-t border-neutral-900/10 flex items-center justify-between">
+                <button
+                  type="button"
+                  class="open-modal-btn inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-neutral-900 hover:text-purple-600 transition-colors cursor-pointer"
+                  data-artwork-id={artwork.id}
+                >
+                  <span>{t("details-and-statement")}</span>
+                  <span>→</span>
+                </button>
+
+                <span class="font-mono text-[10px] text-neutral-400 uppercase tracking-wider">
+                  {t("status-available")}
+                </span>
+              </div>
+            </div>
+          </article>
+        ))}
+
+        <!-- Closing Exhibition Card -->
+        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[60vh] max-h-[540px] min-h-[380px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-neutral-950 text-white">
+          <div>
+            <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
+              {t("acquisitions-tag")}
+            </span>
+            <h3 class="font-serif text-2xl sm:text-3xl italic text-white mb-3 leading-tight">
+              {t("acquisitions-title")}
+            </h3>
+            <p class="font-serif text-xs sm:text-sm text-neutral-300 leading-relaxed mb-6 line-clamp-6">
+              {t("acquisitions-text")}
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <button
+              type="button"
+              data-contact-action="whatsapp"
+              data-message="Hello, I would like to inquire about original works and commissions from RabbitHole Art Studio."
+              class="flex w-full items-center justify-center rounded-full bg-white px-4 py-2.5 font-mono text-xs uppercase tracking-wider text-neutral-950 transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+            >
+              {t("inquire-whatsapp")}
+            </button>
+            <button
+              type="button"
+              data-contact-action="email"
+              data-subject="Inquiry: RabbitHole Art Studio Original Works"
+              class="flex w-full items-center justify-center rounded-full border border-white/30 px-4 py-2.5 font-mono text-xs uppercase tracking-wider text-white transition-colors hover:bg-white/10 cursor-pointer"
+            >
+              {t("email-studio")}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Visual Scroll Indicator Bar -->
+  <div class="container mx-auto px-4 sm:px-8 mt-4 sm:mt-6 flex items-center justify-between shrink-0">
+    <div class="h-0.5 flex-1 max-w-xs bg-neutral-200 rounded-full overflow-hidden">
+      <div
+        id="catalogue-progress-bar"
+        class="h-full w-1/6 bg-neutral-950 transition-all duration-150"
+      ></div>
+    </div>
+    <span class="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-neutral-400">
+      {t("archive-label")}
+    </span>
+  </div>
+</section>
+
+<!-- High-Fashion Editorial Lightbox Modal -->
+<div
+  id="artwork-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 opacity-0 pointer-events-none transition-opacity duration-300"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+  <!-- Backdrop -->
+  <div
+    id="modal-backdrop"
+    class="absolute inset-0 bg-neutral-950/70 backdrop-blur-md"
+  ></div>
+
+  <!-- Modal Content Container -->
+  <div
+    id="modal-card"
+    class="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-none bg-white p-6 sm:p-8 md:p-10 shadow-2xl border border-neutral-900/10 no-scrollbar"
+  >
+    <!-- Close Button -->
+    <button
+      id="modal-close-btn"
+      aria-label={t("modal-close")}
+      class="absolute top-5 right-5 sm:top-7 sm:right-7 flex size-10 items-center justify-center rounded-full bg-neutral-100 text-neutral-800 transition-colors hover:bg-neutral-950 hover:text-white cursor-pointer"
+    >
+      ✕
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+      <!-- Modal Image -->
+      <div class="aspect-[3/4] w-full overflow-hidden bg-neutral-100 border border-neutral-900/10 shadow-inner">
+        <img id="modal-img" src="" alt="" class="h-full w-full object-cover" />
+      </div>
+
+      <!-- Modal Metadata & Lorem Ipsum Critique -->
+      <div class="flex flex-col justify-between h-full space-y-6">
+        <div>
+          <div class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-neutral-400 mb-2">
+            <span
+              id="modal-number"
+              class="font-serif italic font-bold text-neutral-950 text-base"
+            >
+              Nº 01
+            </span>
+            <span>·</span>
+            <span id="modal-subtitle">Series</span>
+            <span>·</span>
+            <span id="modal-year">2026</span>
+          </div>
+
+          <h3
+            id="modal-title"
+            class="font-serif text-3xl sm:text-4xl text-neutral-900 mb-4"
+          >
+            Artwork Title
+          </h3>
+
+          <div class="p-4 bg-neutral-50 border border-neutral-900/5 mb-5 space-y-1 font-mono text-xs text-neutral-600">
+            <div>
+              <span class="text-neutral-400">{t("modal-medium-label")}</span>{" "}
+              <span id="modal-medium">Oil on linen</span>
+            </div>
+            <div>
+              <span class="text-neutral-400">
+                {t("modal-dimensions-label")}
+              </span>{" "}
+              <span id="modal-dimensions">140 × 110 cm</span>
+            </div>
+            <div>
+              <span class="text-neutral-400">
+                {t("modal-provenance-label")}
+              </span>{" "}
+              <span>{t("modal-provenance-val")}</span>
+            </div>
+          </div>
+
+          <blockquote class="border-l-2 border-neutral-900 pl-4 my-4 font-serif text-sm italic text-neutral-700 leading-relaxed">
+            <span id="modal-quote">"Quote placeholder"</span>
+          </blockquote>
+
+          <div class="space-y-3 font-serif text-sm text-neutral-600 leading-relaxed">
+            <p id="modal-desc">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+            <p class="text-xs text-neutral-400 font-mono">
+              {t("modal-authenticity-note")}
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-neutral-900/10 flex flex-col sm:flex-row gap-3">
+          <button
+            type="button"
+            id="modal-inquire-whatsapp"
+            data-contact-action="whatsapp"
+            class="flex-1 flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 font-mono text-xs uppercase tracking-wider text-white transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+          >
+            {t("modal-inquire-whatsapp")}
+          </button>
+          <button
+            type="button"
+            id="modal-inquire-email"
+            data-contact-action="email"
+            class="flex items-center justify-center rounded-full border border-neutral-900/20 px-6 py-3 font-mono text-xs uppercase tracking-wider text-neutral-900 hover:bg-neutral-100 transition-colors cursor-pointer"
+          >
+            {t("modal-inquire-email")}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Embedded Artworks Data for Client-Side Modal & Interactions (Synchronized with artworks.md) -->
+<script
+  id="artworks-data"
+  type="application/json"
+  set:html={JSON.stringify(artworks)}
+/>

@@ -1,0 +1,210 @@
+---
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+---
+
+<footer
+  id="colophon"
+  class="relative z-10 w-full border-t border-neutral-900/15 bg-neutral-900 text-neutral-100 pt-16 pb-12"
+>
+  <div class="container mx-auto px-5 sm:px-8">
+    <!-- Top Editorial Masthead -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-14 border-b border-white/10">
+      <div class="lg:col-span-6 space-y-4">
+        <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block">
+          {t("colophon-tag")}
+        </span>
+        <h3 class="font-serif text-3xl sm:text-5xl uppercase tracking-tight text-white">
+          {t("app-name")}
+        </h3>
+        <p class="font-serif text-base sm:text-lg italic text-neutral-300 max-w-lg leading-relaxed">
+          "{t("description")}"
+        </p>
+      </div>
+
+      <div class="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-8 text-neutral-300">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-neutral-500 block mb-2">
+            {t("colophon-curator-tag")}
+          </span>
+          <p class="font-serif text-xl text-white mb-1">{t("curator-name")}</p>
+          <a
+            href="https://instagram.com/its_eshale"
+            target="_blank"
+            rel="noopener nofollow"
+            class="font-mono text-xs text-teal-400 hover:underline"
+          >
+            {t("curator-handle")}
+          </a>
+
+          <div class="mt-6">
+            <span class="font-mono text-xs uppercase tracking-widest text-neutral-500 block mb-2">
+              {t("colophon-location-tag")}
+            </span>
+            <p class="font-mono text-xs leading-relaxed text-neutral-400">
+              {t("studio-location-city")}
+              <br />
+              {t("studio-location-note")}
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-neutral-500 block mb-2">
+            {t("colophon-connect-tag")}
+          </span>
+          <div class="space-y-4 font-mono text-xs text-neutral-300">
+            <div>
+              <span class="text-neutral-500 block mb-1">
+                {t("instagram-label")}
+              </span>
+              <a
+                href="https://instagram.com/rabbitholeartstudio"
+                target="_blank"
+                rel="noopener nofollow"
+                class="text-teal-400 hover:underline flex items-center gap-1"
+              >
+                {t("instagram-handle")}
+              </a>
+            </div>
+
+            <!-- Click to View Protected WhatsApp / Phone -->
+            <div
+              class="protected-contact-group border border-white/10 rounded-lg p-3 bg-white/5 space-y-1.5"
+              data-protected-type="phone"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-neutral-400 text-[11px] uppercase tracking-wider">
+                  {t("phone-whatsapp-label")}
+                </span>
+                <span class="copied-badge text-[10px] text-teal-400 font-bold opacity-0 transition-opacity">
+                  {t("copied-badge")}
+                </span>
+              </div>
+              <div class="reveal-placeholder flex items-center justify-between gap-2">
+                <span class="text-neutral-300 tracking-wider font-mono">
+                  +91 79865 •••••
+                </span>
+                <button
+                  type="button"
+                  class="reveal-contact-btn text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-sm bg-white/10 hover:bg-white/20 text-purple-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  {t("click-to-view")}
+                </button>
+              </div>
+              <div class="revealed-content hidden pt-1 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
+                <span class="contact-full-val font-bold text-white tracking-wider"></span>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    class="action-direct-btn text-[11px] text-teal-400 hover:underline cursor-pointer"
+                  >
+                    {t("action-chat")}
+                  </button>
+                  <span class="text-neutral-600">·</span>
+                  <button
+                    type="button"
+                    class="action-copy-btn text-[11px] text-neutral-400 hover:text-white underline cursor-pointer"
+                  >
+                    {t("action-copy")}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Click to View Protected Email -->
+            <div
+              class="protected-contact-group border border-white/10 rounded-lg p-3 bg-white/5 space-y-1.5"
+              data-protected-type="email"
+            >
+              <div class="flex items-center justify-between">
+                <span class="text-neutral-400 text-[11px] uppercase tracking-wider">
+                  {t("email-label")}
+                </span>
+                <span class="copied-badge text-[10px] text-teal-400 font-bold opacity-0 transition-opacity">
+                  {t("copied-badge")}
+                </span>
+              </div>
+              <div class="reveal-placeholder flex items-center justify-between gap-2">
+                <span class="text-neutral-300 tracking-wider font-mono">
+                  artstudio•••••@gmail.com
+                </span>
+                <button
+                  type="button"
+                  class="reveal-contact-btn text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-sm bg-white/10 hover:bg-white/20 text-purple-300 hover:text-white transition-colors cursor-pointer"
+                >
+                  {t("click-to-view")}
+                </button>
+              </div>
+              <div class="revealed-content hidden pt-1 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
+                <span class="contact-full-val font-bold text-white tracking-wider"></span>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    class="action-direct-btn text-[11px] text-teal-400 hover:underline cursor-pointer"
+                  >
+                    {t("action-send-email")}
+                  </button>
+                  <span class="text-neutral-600">·</span>
+                  <button
+                    type="button"
+                    class="action-copy-btn text-[11px] text-neutral-400 hover:text-white underline cursor-pointer"
+                  >
+                    {t("action-copy")}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <span class="text-neutral-500 block mb-1">
+                {t("studio-pin-label")}
+              </span>
+              <a
+                href="https://maps.app.goo.gl/kxsoMwDU5pPwvopx6"
+                target="_blank"
+                rel="noopener nofollow"
+                class="text-neutral-300 hover:text-white transition-colors"
+              >
+                {t("open-google-maps")}
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <span class="font-mono text-xs uppercase tracking-widest text-neutral-500 block mb-2">
+              {t("colophon-design-tag")}
+            </span>
+            <a
+              href="https://waybove.pages.dev"
+              target="_blank"
+              rel="noopener nofollow"
+              class="font-mono text-xs text-neutral-400 hover:text-white transition-colors"
+            >
+              {t("designed-by-vaibhav")}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Colophon Bar -->
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
+      <p>
+        &copy; {new Date().getFullYear()}&nbsp;
+        {t("app-name")}. {t("all-rights-reserved")}
+      </p>
+
+      <button
+        id="scroll-to-top-btn"
+        type="button"
+        class="group inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
+      >
+        <span>{t("back-to-cover")}</span>
+        <span class="transition-transform group-hover:-translate-y-1">↑</span>
+      </button>
+    </div>
+  </div>
+</footer>

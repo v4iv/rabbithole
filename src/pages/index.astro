@@ -3,6 +3,8 @@ import HeroImage from "@/assets/hero.svg"
 import Navbar from "@/components/Navbar.astro"
 import Layout from "@/layouts/Layout.astro"
 import Links from "@/components/Links.astro"
+import Catalogue from "@/components/Catalogue.astro"
+import Colophon from "@/components/Colophon.astro"
 import { getLangFromUrl, useTranslations } from "@/i18n/utils"
 
 const lang = getLangFromUrl(Astro.url)
@@ -18,9 +20,14 @@ const t = useTranslations(lang)
     ></div>
 
     <Navbar />
-    <section class="relative z-10 flex min-h-screen items-center justify-center">
+
+    <!-- HERO SECTION -->
+    <section
+      id="hero"
+      class="hero-section relative z-10 flex min-h-screen flex-col items-center justify-center"
+    >
       <div class="hero-container relative container mx-auto p-5 will-change-transform">
-        <!-- hero -->
+        <!-- hero logo -->
         <HeroImage class="hero-svg w-full select-none" />
 
         <!-- subtitle -->
@@ -49,23 +56,35 @@ const t = useTranslations(lang)
           </a>
         </div>
       </div>
+
+      <!-- Hero Bottom Bar: Scroll Cue & Social Links Dock -->
+      <div class="hero-bottom-bar pointer-events-none absolute bottom-6 z-30 flex w-full flex-col items-center justify-between gap-4 px-6 sm:bottom-8 sm:flex-row sm:px-12">
+        <a
+          href="#catalogue"
+          class="catalogue-scroll-cue pointer-events-auto group flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-600 transition-colors hover:text-neutral-950"
+        >
+          <span class="inline-block size-1.5 rounded-full bg-purple-500 transition-transform group-hover:scale-150"></span>
+          <span>{t("explore-catalogue")}</span>
+          <span class="cue-arrow inline-block transition-transform group-hover:translate-y-1">
+            ↓
+          </span>
+        </a>
+
+        <div class="pointer-events-auto">
+          <Links />
+        </div>
+
+        <div class="hidden font-mono text-xs uppercase tracking-widest text-neutral-400 sm:block">
+          {t("issue-tag")}
+        </div>
+      </div>
     </section>
-    <!-- links -->
-    <Links />
-    <!-- credits -->
-    <footer class="page-footer pointer-events-none absolute right-5 bottom-0.5 z-20 flex w-full justify-end">
-      <a
-        href="https://waybove.pages.dev"
-        class="pointer-events-auto font-mono text-xs lowercase"
-        target="_blank"
-        rel="noopener nofollow"
-      >
-        designed by&nbsp;
-        <span class="font-bold text-blue-900 hover:border-b hover:border-dotted">
-          vaibhav
-        </span>
-      </a>
-    </footer>
+
+    <!-- CATALOGUE / GALLERY SECTION -->
+    <Catalogue />
+
+    <!-- COLOPHON / FOOTER DIRECTORY -->
+    <Colophon />
   </main>
 </Layout>
 

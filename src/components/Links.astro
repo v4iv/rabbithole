@@ -9,53 +9,51 @@ const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 ---
 
-<div class="social-links-bar pointer-events-auto absolute bottom-8 z-30 flex w-full items-center justify-center gap-2">
+<div class="social-links-bar pointer-events-auto flex items-center justify-center gap-2">
   <a
     aria-label={t("instagram")}
     href="https://instagram.com/rabbitholeartstudio"
     target="_blank"
     rel="noopener nofollow"
-    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-4 shadow-md transition-colors hover:bg-neutral-700"
+    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-3.5 sm:p-4 shadow-md transition-colors hover:bg-neutral-700"
   >
     <InstagramIcon
       fill="#ffffff"
-      class="pointer-events-none size-6 transition-transform duration-200"
+      class="pointer-events-none size-5 sm:size-6 transition-transform duration-200"
     />
   </a>
-  <a
+  <button
+    type="button"
+    data-contact-action="whatsapp"
     aria-label={t("whatsapp")}
-    href="https://wa.me/917986588875"
-    target="_blank"
-    rel="noopener nofollow"
-    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-4 shadow-md transition-colors hover:bg-neutral-700"
+    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-3.5 sm:p-4 shadow-md transition-colors hover:bg-neutral-700"
   >
     <WhatsAppIcon
       fill="#ffffff"
-      class="pointer-events-none size-6 transition-transform duration-200"
+      class="pointer-events-none size-5 sm:size-6 transition-transform duration-200"
     />
-  </a>
-  <a
+  </button>
+  <button
+    type="button"
+    data-contact-action="email"
     aria-label={t("email")}
-    href="mailto:artstudiorabbithole@gmail.com"
-    target="_blank"
-    rel="noopener nofollow"
-    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-4 shadow-md transition-colors hover:bg-neutral-700"
+    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-3.5 sm:p-4 shadow-md transition-colors hover:bg-neutral-700"
   >
     <EmailIcon
       fill="#ffffff"
-      class="pointer-events-none size-6 transition-transform duration-200"
+      class="pointer-events-none size-5 sm:size-6 transition-transform duration-200"
     />
-  </a>
+  </button>
   <a
     aria-label={t("maps")}
     href="https://maps.app.goo.gl/kxsoMwDU5pPwvopx6"
     target="_blank"
     rel="noopener nofollow"
-    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-4 shadow-md transition-colors hover:bg-neutral-700"
+    class="social-link-btn group relative cursor-pointer rounded-full bg-neutral-950 p-3.5 sm:p-4 shadow-md transition-colors hover:bg-neutral-700"
   >
     <GoogleMapsIcon
       fill="#ffffff"
-      class="pointer-events-none size-6 transition-transform duration-200"
+      class="pointer-events-none size-5 sm:size-6 transition-transform duration-200"
     />
   </a>
 </div>

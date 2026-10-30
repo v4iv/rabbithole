@@ -42,3 +42,18 @@
   transform-origin: center center;
   will-change: transform, opacity;
 }
+
+/* Hide scrollbar utility for lookbook track */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Modal and Catalogue Transitions */
+#artwork-modal.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
