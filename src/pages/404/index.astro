@@ -14,7 +14,7 @@ const translatePath = useTranslatedPath(lang)
 ---
 
 <Layout title={t("404-meta-title")}>
-  <main class="relative min-h-screen flex flex-col justify-between overflow-x-hidden bg-[#faf9f6] text-neutral-900">
+  <main class="relative min-h-screen min-h-svh min-h-dvh flex flex-col justify-between overflow-x-hidden bg-[#faf9f6] text-neutral-900 pb-[env(safe-area-inset-bottom,0px)]">
     <!-- Ambient watercolor cursor glow -->
     <div
       class="cursor-glow pointer-events-none fixed inset-0 z-0 opacity-0"
@@ -22,7 +22,7 @@ const translatePath = useTranslatedPath(lang)
     ></div>
 
     <!-- Top Editorial Header Navigation -->
-    <header class="relative z-20 border-b border-neutral-900/10 bg-[#faf9f6]/85 backdrop-blur-md">
+    <header class="relative z-20 border-b border-neutral-900/10 bg-[#faf9f6]/85 backdrop-blur-md pt-[env(safe-area-inset-top,0px)]">
       <div class="container mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
         <a
           href={translatePath("/")}
@@ -82,7 +82,7 @@ const translatePath = useTranslatedPath(lang)
     </section>
 
     <!-- Minimalist Editorial Footer -->
-    <footer class="relative z-20 border-t border-neutral-900/10 py-6 px-6 sm:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
+    <footer class="relative z-20 border-t border-neutral-900/10 py-6 px-6 sm:px-12 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px))] flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
       <span>{t("app-name")}</span>
       <span>{t("all-rights-reserved")}</span>
     </footer>

@@ -271,7 +271,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
 <!-- Lightbox Modal for Artworks -->
 <div
   id="artwork-modal"
-  class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 opacity-0 pointer-events-none transition-opacity duration-300"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 pt-[calc(1rem+env(safe-area-inset-top,0px))] pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pl-[calc(1rem+env(safe-area-inset-left,0px))] pr-[calc(1rem+env(safe-area-inset-right,0px))] opacity-0 pointer-events-none transition-opacity duration-300"
   role="dialog"
   aria-modal="true"
   aria-hidden="true"
