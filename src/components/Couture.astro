@@ -1,0 +1,145 @@
+---
+import { Picture } from "astro:assets"
+import type { ImageMetadata } from "astro"
+import * as fashionDoc from "@/content/fashion.md"
+import type { FashionWork } from "@/types/fashion"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const fashionWorks: FashionWork[] = ((fashionDoc as any).frontmatter?.works ||
+  []) as FashionWork[]
+
+const fashionImageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/img/fashion-*.jpg",
+  { eager: true },
+)
+
+const fashionImageMap: Record<string, ImageMetadata> = {
+  "celestial-monolith":
+    fashionImageModules["/src/assets/img/fashion-01.jpg"].default,
+  "anima-terra": fashionImageModules["/src/assets/img/fashion-02.jpg"].default,
+  "aura-drape": fashionImageModules["/src/assets/img/fashion-03.jpg"].default,
+  "the-mystics-mantle":
+    fashionImageModules["/src/assets/img/fashion-04.jpg"].default,
+  "translucent-veil":
+    fashionImageModules["/src/assets/img/fashion-05.jpg"].default,
+  "sanctuary-vestment-01":
+    fashionImageModules["/src/assets/img/fashion-06.jpg"].default,
+}
+---
+
+<section
+  id="fashion"
+  class="relative z-10 py-16 sm:py-24 border-b border-neutral-900/10 bg-white/70"
+>
+  <div class="container mx-auto px-4 sm:px-8">
+    <!-- Section Header -->
+    <div class="fashion-header flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-neutral-900/15 mb-10 sm:mb-14">
+      <div class="max-w-3xl">
+        <div class="flex items-center gap-3 mb-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <span class="inline-block size-2 rounded-full bg-teal-500 animate-pulse"></span>
+          <span>{t("fashion-section-vol")}</span>
+          <span class="text-neutral-300">/</span>
+          <span>{t("fashion-season-year")}</span>
+        </div>
+        <h2 class="font-serif text-4xl sm:text-6xl uppercase tracking-tight text-neutral-900">
+          {t("fashion-section-title")}
+        </h2>
+        <p class="mt-3 font-serif text-base sm:text-lg text-neutral-600 leading-relaxed">
+          {t("fashion-section-description")}
+        </p>
+      </div>
+
+      <div class="font-mono text-xs text-neutral-500 tracking-wider shrink-0">
+        <span class="inline-block border border-neutral-900/20 bg-neutral-100 px-3.5 py-1.5 uppercase font-medium text-neutral-800">
+          {t("fashion-badge-made-to-order")}
+        </span>
+      </div>
+    </div>
+
+    <!-- Material Palette Subhead Strip -->
+    <div class="mb-8 font-mono text-[11px] uppercase tracking-wider text-neutral-500">
+      <span>{t("fashion-materials-strip")}</span>
+    </div>
+
+    <!-- Fashion Looks Grid -->
+    <div class="fashion-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+      {fashionWorks.map((work) => (
+        <article
+          class="fashion-card group flex flex-col justify-between border border-neutral-900/10 bg-white shadow-xs transition-all duration-300 hover:border-neutral-900/30 hover:shadow-xl overflow-hidden cursor-pointer"
+          data-fashion-id={work.id}
+        >
+          <!-- Card Header -->
+          <div class="flex items-center justify-between px-5 py-3 border-b border-neutral-900/10 font-mono text-xs uppercase tracking-wider text-neutral-500 shrink-0">
+            <span class="font-serif text-sm font-bold italic text-neutral-900">
+              {t("fashion-look-prefix")} {work.number}
+            </span>
+            <span>{work.season}</span>
+          </div>
+
+          <!-- Image Frame with Picture component (AVIF, WebP, JPG) -->
+          <div class="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100">
+            {fashionImageMap[work.id] ? (
+              <Picture
+                src={fashionImageMap[work.id]}
+                formats={["avif", "webp"]}
+                fallbackFormat="jpg"
+                alt={work.alt}
+                loading="lazy"
+                decoding="async"
+                class="fashion-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+              />
+            ) : (
+              <img
+                src={work.image}
+                alt={work.alt}
+                loading="lazy"
+                decoding="async"
+                class="fashion-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+              />
+            )}
+            <!-- Hover Overlay Pill -->
+            <div class="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-950/20 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+              <span class="rounded-full bg-white/95 px-4 py-2 font-mono text-xs uppercase tracking-wider text-neutral-900 shadow-md">
+                {t("fashion-expand-look")}
+              </span>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="flex flex-col justify-between p-5 sm:p-6 shrink-0 bg-white">
+            <div>
+              <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 block mb-1">
+                {work.collection}
+              </span>
+              <h3 class="font-serif text-2xl text-neutral-900 mb-2 group-hover:text-purple-900 transition-colors">
+                {work.title}
+              </h3>
+              <p class="font-mono text-xs text-neutral-500 mb-3 line-clamp-1">
+                {work.materials}
+              </p>
+              <p class="font-serif text-xs italic text-neutral-600 line-clamp-2 leading-relaxed">
+                "{work.quote}"
+              </p>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-neutral-900/10 flex items-center justify-between">
+              <button
+                type="button"
+                class="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-neutral-900 hover:text-purple-600 transition-colors cursor-pointer"
+              >
+                <span>{t("fashion-view-concept")}</span>
+                <span>→</span>
+              </button>
+              <span class="font-mono text-[10px] text-neutral-600 uppercase tracking-wider bg-neutral-100 px-2 py-0.5 border border-neutral-900/10">
+                {t("badge-made-to-order")}
+              </span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

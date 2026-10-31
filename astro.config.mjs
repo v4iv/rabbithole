@@ -15,6 +15,15 @@ const { URL = "https://rabbitholeartstudio.com" } = loadEnv(
 // https://astro.build/config
 export default defineConfig({
   site: URL || "https://rabbitholeartstudio.com",
+  image: {
+    domains: ["images.unsplash.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
   experimental: {
     svgOptimizer: svgoOptimizer(),
   },

@@ -2,6 +2,28 @@
 import * as artworksDoc from "@/content/artworks.md"
 import type { Artwork } from "@/types/artwork"
 import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+import { Picture } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+const artworkImageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/img/artwork-*.jpg",
+  { eager: true },
+)
+
+const artworkImageMap: Record<string, ImageMetadata> = {
+  "ethereal-contours":
+    artworkImageModules["/src/assets/img/artwork-01.jpg"].default,
+  "tactile-resonance":
+    artworkImageModules["/src/assets/img/artwork-02.jpg"].default,
+  "chromatic-reverie":
+    artworkImageModules["/src/assets/img/artwork-03.jpg"].default,
+  "monolith-in-repose":
+    artworkImageModules["/src/assets/img/artwork-04.jpg"].default,
+  "quiet-geometries":
+    artworkImageModules["/src/assets/img/artwork-05.jpg"].default,
+  "unspoken-pigment":
+    artworkImageModules["/src/assets/img/artwork-06.jpg"].default,
+}
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
@@ -14,7 +36,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
 
 <section
   id="catalogue"
-  class="catalogue-section relative z-10 w-full min-h-screen min-h-svh min-h-dvh lg:h-screen lg:max-h-screen flex flex-col justify-between bg-neutral-50/60 py-4 sm:py-6 lg:py-6 border-t border-neutral-900/10 overflow-hidden"
+  class="catalogue-section relative z-10 w-full min-h-screen min-h-svh min-h-dvh lg:h-screen lg:max-h-screen flex flex-col justify-between bg-neutral-50/60 pt-20 sm:pt-24 pb-4 sm:pb-6 border-t border-neutral-900/10 overflow-hidden"
 >
   <!-- Editorial Masthead Header -->
   <div class="container mx-auto px-4 sm:px-8 mb-6 sm:mb-8 shrink-0">
@@ -62,7 +84,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
         class="catalogue-track flex flex-nowrap items-stretch gap-5 sm:gap-8 px-6 sm:px-12 lg:px-16 pb-2 will-change-transform"
       >
         <!-- Introductory Editorial Card -->
-        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[60vh] max-h-[540px] min-h-[380px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-white/90 shadow-xs">
+        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[56vh] max-h-[500px] min-h-[360px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-white/90 shadow-xs">
           <div>
             <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
               {t("foreword-tag")}
@@ -84,7 +106,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
         <!-- Artwork Cards -->
         {artworks.map((artwork, idx) => (
           <article
-            class="catalogue-card group shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[380px] xl:w-[420px] h-[60vh] max-h-[540px] min-h-[380px] flex flex-col justify-between border border-neutral-900/10 bg-white transition-all duration-300 hover:border-neutral-900/30 hover:shadow-lg overflow-hidden"
+            class="catalogue-card group shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[380px] xl:w-[420px] h-[56vh] max-h-[500px] min-h-[360px] flex flex-col justify-between border border-neutral-900/10 bg-white transition-all duration-300 hover:border-neutral-900/30 hover:shadow-lg overflow-hidden"
             data-index={String(idx + 1).padStart(2, "0")}
             data-id={artwork.id}
           >
@@ -101,8 +123,10 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
               class="artwork-frame relative flex-1 min-h-[180px] sm:min-h-[220px] w-full overflow-hidden bg-neutral-100 cursor-pointer"
               data-artwork-id={artwork.id}
             >
-              <img
-                src={artwork.image}
+              <Picture
+                src={artworkImageMap[artwork.id]}
+                formats={["avif", "webp"]}
+                fallbackFormat="jpg"
                 alt={artwork.alt}
                 loading="lazy"
                 decoding="async"
@@ -153,7 +177,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
         ))}
 
         <!-- Closing Exhibition Card -->
-        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[60vh] max-h-[540px] min-h-[380px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-neutral-950 text-white">
+        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[56vh] max-h-[500px] min-h-[360px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-neutral-950 text-white">
           <div>
             <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
               {t("acquisitions-tag")}

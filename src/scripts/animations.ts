@@ -1,6 +1,7 @@
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import type { Artwork } from "@/types/artwork"
+import type { FashionWork } from "@/types/fashion"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -13,6 +14,20 @@ function getArtworks(): Artwork[] {
       return JSON.parse(el.textContent) as Artwork[]
     } catch (e) {
       console.error("Failed to parse artworks-data", e)
+    }
+  }
+  return []
+}
+
+// Retrieve fashion works from the server-rendered script tag (source of truth: src/content/fashion.md)
+function getFashionWorks(): FashionWork[] {
+  if (typeof document === "undefined") return []
+  const el = document.getElementById("fashion-data")
+  if (el?.textContent) {
+    try {
+      return JSON.parse(el.textContent) as FashionWork[]
+    } catch (e) {
+      console.error("Failed to parse fashion-data", e)
     }
   }
   return []
@@ -79,6 +94,7 @@ export function setupAnimations() {
       },
     )
     initCatalogueInteractions()
+    initFashionInteractions()
     initProtectedContactHandlers()
     return
   }
@@ -395,7 +411,17 @@ export function setupAnimations() {
   initCatalogueInteractions()
 
   /* -------------------------------------------------------------
-   * 8. PROTECTED CONTACT & CLICK-TO-VIEW HANDLERS
+   * 8. FASHION & COUTURE MODAL INTERACTIONS
+   * ------------------------------------------------------------- */
+  initFashionInteractions()
+
+  /* -------------------------------------------------------------
+   * 9. EDITORIAL PAGE ANIMATIONS (/eshale)
+   * ------------------------------------------------------------- */
+  initEditorialPageAnimations()
+
+  /* -------------------------------------------------------------
+   * 10. PROTECTED CONTACT & CLICK-TO-VIEW HANDLERS
    * ------------------------------------------------------------- */
   initProtectedContactHandlers()
 }
@@ -482,21 +508,8 @@ function initCatalogueInteractions() {
       pin: true,
       anticipatePin: 1,
       scrub: 0.8,
-      // Begins when the artwork cards are vertically centered in the viewport
-      start: () => {
-        const card = track.querySelector(
-          ".catalogue-card",
-        ) as HTMLElement | null
-        const wrapper = document.querySelector(
-          ".catalogue-carousel-wrapper",
-        ) as HTMLElement | null
-        if (card && wrapper) {
-          const cardCenterFromSectionTop =
-            wrapper.offsetTop + card.offsetHeight / 2
-          return `top+=${cardCenterFromSectionTop} center`
-        }
-        return "top top"
-      },
+      // Begins clickjacking immediately at the section start
+      start: "top top",
       end: () => `+=${getScrollDistance()}`,
       invalidateOnRefresh: true,
       onUpdate: (self) => {
@@ -527,6 +540,36 @@ function initCatalogueInteractions() {
       behavior: "smooth",
     })
   }
+
+  // Smooth scroll to catalogue section start when links with href="#catalogue" are clicked
+  document.querySelectorAll('a[href="#catalogue"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault()
+      if (st) {
+        window.scrollTo({
+          top: st.start + 1,
+          behavior: "smooth",
+        })
+      } else {
+        catalogueSection.scrollIntoView({ behavior: "smooth" })
+      }
+    })
+  })
+
+  // Smooth scroll past catalogue to fashion when links with href="#fashion" are clicked
+  document.querySelectorAll('a[href="#fashion"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const fashionSection = document.getElementById("fashion")
+      if (fashionSection) {
+        e.preventDefault()
+        const targetTop = st ? st.end + 2 : fashionSection.offsetTop
+        window.scrollTo({
+          top: targetTop,
+          behavior: "smooth",
+        })
+      }
+    })
+  })
 
   // Smooth scroll to catalogue when Hero cue is clicked
   const cueLink = document.querySelector(".catalogue-scroll-cue")
@@ -642,7 +685,9 @@ function initCatalogueInteractions() {
     if (!item || !modal || !modalCard) return
 
     if (modalImg) {
-      modalImg.src = item.image
+      const card = document.querySelector(`[data-id="${artworkId}"]`)
+      const cardImg = card?.querySelector("img")
+      modalImg.src = cardImg?.currentSrc || cardImg?.src || item.image
       modalImg.alt = item.alt
     }
     if (modalNumber) modalNumber.textContent = `Nº ${item.number}`
@@ -721,6 +766,300 @@ function initCatalogueInteractions() {
       closeArtworkModal()
     }
   })
+}
+
+/**
+ * Initializes Fashion & Couture Lightbox Modal interactions:
+ * - Reads from #fashion-data
+ * - Opens detail view with description, materials, and protected inquiry buttons
+ */
+function initFashionInteractions() {
+  const modal = document.getElementById("fashion-modal")
+  const modalCard = document.getElementById("fashion-modal-card")
+  const modalCloseBtn = document.getElementById("fashion-modal-close-btn")
+  const modalBackdrop = document.getElementById("fashion-modal-backdrop")
+
+  if (!modal || !modalCard) return
+
+  const modalImg = document.getElementById(
+    "fashion-modal-img",
+  ) as HTMLImageElement | null
+  const modalNumber = document.getElementById("fashion-modal-number")
+  const modalCollection = document.getElementById("fashion-modal-collection")
+  const modalYear = document.getElementById("fashion-modal-year")
+  const modalTitle = document.getElementById("fashion-modal-title")
+  const modalMaterials = document.getElementById("fashion-modal-materials")
+  const modalSeason = document.getElementById("fashion-modal-season")
+  const modalQuote = document.getElementById("fashion-modal-quote")
+  const modalDesc = document.getElementById("fashion-modal-desc")
+  const modalWhatsAppBtn = document.getElementById(
+    "fashion-modal-inquire-whatsapp",
+  )
+  const modalEmailBtn = document.getElementById("fashion-modal-inquire-email")
+
+  function openFashionModal(workId: string) {
+    const works = getFashionWorks()
+    const item = works.find((w) => w.id === workId)
+    if (!item || !modal || !modalCard) return
+
+    if (modalImg) {
+      const card = document.querySelector(`[data-fashion-id="${workId}"]`)
+      const cardImg = card?.querySelector("img")
+      modalImg.src = cardImg?.currentSrc || cardImg?.src || item.image
+      modalImg.alt = item.alt
+    }
+    if (modalNumber) modalNumber.textContent = `LOOK Nº ${item.number}`
+    if (modalCollection) modalCollection.textContent = item.collection
+    if (modalYear) modalYear.textContent = item.year
+    if (modalTitle) modalTitle.textContent = item.title
+    if (modalMaterials) modalMaterials.textContent = item.materials
+    if (modalSeason) modalSeason.textContent = item.season
+    if (modalQuote) modalQuote.textContent = `"${item.quote}"`
+    if (modalDesc) modalDesc.textContent = item.description
+
+    if (modalWhatsAppBtn) {
+      modalWhatsAppBtn.setAttribute(
+        "data-message",
+        `Hello, I would like to inquire about the custom couture look "${item.title}" (Look Nº ${item.number}) by Eshale.`,
+      )
+    }
+    if (modalEmailBtn) {
+      modalEmailBtn.setAttribute(
+        "data-subject",
+        `Couture Inquiry: "${item.title}" (Look Nº ${item.number}) by Eshale`,
+      )
+    }
+
+    modal.classList.add("is-open")
+    modal.setAttribute("aria-hidden", "false")
+    document.body.style.overflow = "hidden"
+
+    gsap.fromTo(
+      modalCard,
+      { scale: 0.94, opacity: 0, y: 15 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
+    )
+  }
+
+  function closeFashionModal() {
+    if (!modal || !modalCard) return
+    gsap.to(modalCard, {
+      scale: 0.96,
+      opacity: 0,
+      y: 10,
+      duration: 0.25,
+      ease: "power2.in",
+      onComplete: () => {
+        modal.classList.remove("is-open")
+        modal.setAttribute("aria-hidden", "true")
+        document.body.style.overflow = ""
+      },
+    })
+  }
+
+  document.querySelectorAll("[data-fashion-id]").forEach((trigger) => {
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation()
+      const id = trigger.getAttribute("data-fashion-id")
+      if (id) openFashionModal(id)
+    })
+  })
+
+  if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeFashionModal)
+  if (modalBackdrop) modalBackdrop.addEventListener("click", closeFashionModal)
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("is-open")) {
+      closeFashionModal()
+    }
+  })
+}
+
+/**
+ * Refined editorial entrance & scroll animations for the /eshale portfolio page:
+ * - Bio masthead, headline, portrait, disciplines, and philosophy entrance
+ * - Subtle pointer parallax on portrait (desktop)
+ * - Scroll-triggered entrance reveal for Couture section header & look cards
+ * - Header elevated shadow state on scroll
+ */
+function initEditorialPageAnimations() {
+  const bioSection = document.getElementById("bio")
+  if (!bioSection) return
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches
+
+  if (prefersReducedMotion) return
+
+  const isFinePointer = window.matchMedia("(pointer: fine)").matches
+
+  // 1. Header scroll shadow transition
+  const header = document.getElementById("editorial-header")
+  if (header) {
+    const updateHeader = () => {
+      if (window.scrollY > 20) {
+        header.classList.add("shadow-xs", "bg-[#faf9f6]/95")
+      } else {
+        header.classList.remove("shadow-xs", "bg-[#faf9f6]/95")
+      }
+    }
+    window.addEventListener("scroll", updateHeader, { passive: true })
+    updateHeader()
+  }
+
+  // 2. Bio Editorial Entrance Timeline
+  const bioMasthead = bioSection.querySelector(".bio-masthead")
+  const bioHeadline = bioSection.querySelector(".bio-headline")
+  const bioQuote = bioSection.querySelector(".bio-quote")
+  const bioPortraitFrame = bioSection.querySelector(".bio-portrait-frame")
+  const bioPortraitImg = bioSection.querySelector(".bio-portrait-frame img")
+  const bioDisciplines = bioSection.querySelector(".bio-disciplines-card")
+  const bioStatement = bioSection.querySelector(".bio-statement-col")
+  const bioCtaRow = bioSection.querySelector(".bio-cta-row")
+
+  const bioTl = gsap.timeline({ delay: 0.15 })
+
+  if (bioMasthead) {
+    bioTl.fromTo(
+      bioMasthead,
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
+      0,
+    )
+  }
+
+  if (bioHeadline) {
+    bioTl.fromTo(
+      bioHeadline,
+      { opacity: 0, y: 24 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
+      0.1,
+    )
+  }
+
+  if (bioQuote) {
+    bioTl.fromTo(
+      bioQuote,
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+      0.2,
+    )
+  }
+
+  if (bioPortraitFrame) {
+    bioTl.fromTo(
+      bioPortraitFrame,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
+      0.22,
+    )
+  }
+
+  if (bioPortraitImg) {
+    bioTl.fromTo(
+      bioPortraitImg,
+      { scale: 1.08 },
+      { scale: 1, duration: 1.4, ease: "power2.out" },
+      0.22,
+    )
+  }
+
+  if (bioDisciplines) {
+    bioTl.fromTo(
+      bioDisciplines,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
+      0.32,
+    )
+  }
+
+  if (bioStatement) {
+    bioTl.fromTo(
+      bioStatement,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
+      0.28,
+    )
+  }
+
+  if (bioCtaRow) {
+    bioTl.fromTo(
+      bioCtaRow,
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
+      0.45,
+    )
+  }
+
+  // 3. Subtle Portrait Parallax on Desktop
+  if (isFinePointer && bioPortraitFrame) {
+    const quickX = gsap.quickTo(bioPortraitFrame, "x", {
+      duration: 0.8,
+      ease: "power2.out",
+    })
+    const quickY = gsap.quickTo(bioPortraitFrame, "y", {
+      duration: 0.8,
+      ease: "power2.out",
+    })
+
+    const onPointerMove = (e: MouseEvent) => {
+      const rect = bioPortraitFrame.getBoundingClientRect()
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return
+      const relX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2)
+      const relY =
+        (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)
+      quickX(relX * 5)
+      quickY(relY * 5)
+    }
+
+    window.addEventListener("mousemove", onPointerMove, { passive: true })
+  }
+
+  // 4. Scroll-Triggered Reveal for Couture Section (Vol. II)
+  const fashionSection = document.getElementById("fashion")
+  if (fashionSection) {
+    const fashionHeader = fashionSection.querySelector(".fashion-header")
+    const fashionCards = fashionSection.querySelectorAll(".fashion-card")
+
+    if (fashionHeader) {
+      gsap.fromTo(
+        fashionHeader,
+        { opacity: 0, y: 22 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: fashionSection,
+            start: "top 80%",
+            once: true,
+          },
+        },
+      )
+    }
+
+    if (fashionCards.length > 0) {
+      gsap.fromTo(
+        fashionCards,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger:
+              fashionSection.querySelector(".fashion-grid") || fashionSection,
+            start: "top 82%",
+            once: true,
+          },
+        },
+      )
+    }
+  }
 }
 
 /**

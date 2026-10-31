@@ -3,16 +3,19 @@ import HeroImage from "@/assets/hero.svg"
 import Navbar from "@/components/Navbar.astro"
 import Layout from "@/layouts/Layout.astro"
 import Links from "@/components/Links.astro"
-import Catalogue from "@/components/Catalogue.astro"
-import Colophon from "@/components/Colophon.astro"
-import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "@/i18n/utils"
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 ---
 
 <Layout>
-  <main class="relative min-h-screen min-h-svh min-h-dvh overflow-x-hidden">
+  <main class="relative min-h-screen min-h-svh min-h-dvh overflow-x-hidden pb-[env(safe-area-inset-bottom,0px)]">
     <!-- Ambient watercolor cursor glow -->
     <div
       class="cursor-glow pointer-events-none fixed inset-0 z-0 opacity-0"
@@ -30,20 +33,19 @@ const t = useTranslations(lang)
         <!-- hero logo -->
         <HeroImage class="hero-svg w-full select-none" />
 
-        <!-- subtitle -->
+        <!-- subtitle with link to Eshale's about page -->
         <div class="hero-subtitle mt-5 flex items-start justify-end">
           {t("signature-by")}&nbsp;
           <a
-            target="_blank"
-            href="https://instagram.com/its_eshale"
-            rel="noopener nofollow"
-            class="signature-link group flex items-start gap-1"
+            href={translatePath("/eshale")}
+            class="signature-link group flex items-start gap-1 cursor-pointer"
+            aria-label="About Eshale"
           >
             <span class="signature-text border-b border-dashed font-serif text-2xl italic transition-colors hover:text-teal-400">
               {t("signature-name")}
             </span>
             <svg
-              class="signature-arrow size-3 transition-transform"
+              class="signature-arrow size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               role="presentation"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -57,34 +59,32 @@ const t = useTranslations(lang)
         </div>
       </div>
 
-      <!-- Hero Bottom Bar: Scroll Cue & Social Links Dock -->
-      <div class="hero-bottom-bar pointer-events-none absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full flex-col items-center justify-between gap-4 px-6 sm:bottom-8 sm:flex-row sm:px-12">
-        <a
-          href="#catalogue"
-          class="catalogue-scroll-cue pointer-events-auto group flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-600 transition-colors hover:text-neutral-950"
-        >
-          <span class="inline-block size-1.5 rounded-full bg-purple-500 transition-transform group-hover:scale-150"></span>
-          <span>{t("explore-catalogue")}</span>
-          <span class="cue-arrow inline-block transition-transform group-hover:translate-y-1">
-            ↓
-          </span>
-        </a>
-
+      <!-- Hero Bottom Bar: Social Links Dock -->
+      <div class="hero-bottom-bar pointer-events-none absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full items-center justify-center px-6 sm:bottom-8 sm:px-12">
         <div class="pointer-events-auto">
           <Links />
         </div>
 
-        <div class="hidden font-mono text-xs uppercase tracking-widest text-neutral-400 sm:block">
+        <div class="pointer-events-none absolute right-6 sm:right-12 hidden font-mono text-xs uppercase tracking-widest text-neutral-400 sm:block">
           {t("issue-tag")}
         </div>
       </div>
     </section>
 
-    <!-- CATALOGUE / GALLERY SECTION -->
-    <Catalogue />
-
-    <!-- COLOPHON / FOOTER DIRECTORY -->
-    <Colophon />
+    <!-- credits -->
+    <footer class="page-footer pointer-events-none absolute right-5 bottom-[calc(0.35rem+env(safe-area-inset-bottom,0px))] z-20 hidden sm:flex w-full justify-end">
+      <a
+        href="https://waybove.pages.dev"
+        class="pointer-events-auto font-mono text-xs lowercase"
+        target="_blank"
+        rel="noopener nofollow"
+      >
+        designed by&nbsp;
+        <span class="font-bold text-blue-900 hover:border-b hover:border-dotted">
+          vaibhav
+        </span>
+      </a>
+    </footer>
   </main>
 </Layout>
 

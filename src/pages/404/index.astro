@@ -1,0 +1,76 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+---
+
+<Layout title={t("404-meta-title")}>
+  <main class="relative min-h-screen min-h-svh min-h-dvh flex flex-col justify-between overflow-x-hidden bg-[#faf9f6] text-neutral-900">
+    <!-- Ambient watercolor cursor glow -->
+    <div
+      class="cursor-glow pointer-events-none fixed inset-0 z-0 opacity-0"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Top Editorial Header Navigation -->
+    <header class="relative z-20 border-b border-neutral-900/10 bg-[#faf9f6]/85 backdrop-blur-md">
+      <div class="container mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+        <a
+          href={translatePath("/")}
+          class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-600 hover:text-neutral-950 transition-colors"
+        >
+          <span class="transition-transform group-hover:-translate-x-1">←</span>
+          <span>{t("about-back-to-studio")}</span>
+        </a>
+
+        <div class="font-mono text-xs uppercase tracking-widest text-neutral-400">
+          {t("issue-tag")}
+        </div>
+      </div>
+    </header>
+
+    <!-- 404 Editorial Centerpiece -->
+    <section class="relative z-10 flex-1 flex flex-col items-center justify-center p-6 sm:p-12 text-center">
+      <div class="max-w-xl mx-auto space-y-6">
+        <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-500 border border-neutral-900/15 bg-white/80 px-3.5 py-1.5 rounded-full">
+          <span class="inline-block size-1.5 rounded-full bg-purple-500 animate-ping"></span>
+          <span>{t("404-tag")}</span>
+        </div>
+
+        <h1 class="font-serif text-6xl sm:text-8xl lg:text-9xl tracking-tight text-neutral-900 uppercase leading-none">
+          {t("404-title")}
+        </h1>
+
+        <p class="font-serif text-xl sm:text-2xl italic text-neutral-600">
+          "{t("404-subtitle")}"
+        </p>
+
+        <p class="font-serif text-sm sm:text-base text-neutral-600 leading-relaxed max-w-md mx-auto">
+          {t("404-message")}
+        </p>
+
+        <div class="pt-4">
+          <a
+            href={translatePath("/")}
+            class="group inline-flex items-center gap-2 rounded-full bg-neutral-950 px-8 py-3.5 font-mono text-xs uppercase tracking-wider text-white shadow-md transition-transform hover:scale-[1.03] active:scale-95"
+          >
+            <span>{t("404-back-home")}</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Minimalist Editorial Footer -->
+    <footer class="relative z-20 border-t border-neutral-900/10 py-6 px-6 sm:px-12 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-neutral-500">
+      <span>{t("app-name")}</span>
+      <span>{t("all-rights-reserved")}</span>
+    </footer>
+  </main>
+</Layout>

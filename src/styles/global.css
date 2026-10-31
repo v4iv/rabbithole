@@ -53,7 +53,8 @@
 }
 
 /* Modal and Catalogue Transitions */
-#artwork-modal.is-open {
+#artwork-modal.is-open,
+#fashion-modal.is-open {
   opacity: 1;
   pointer-events: auto;
 }
