@@ -6,13 +6,12 @@ import Links from "@/components/Links.astro"
 import {
   getLangFromUrl,
   useTranslations,
-  useTranslatedPath,
+  // useTranslatedPath,
 } from "@/i18n/utils"
-import { getIssueTag } from "@/utils/issue"
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
-const translatePath = useTranslatedPath(lang)
+// const translatePath = useTranslatedPath(lang)
 ---
 
 <Layout>
