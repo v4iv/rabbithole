@@ -1,0 +1,131 @@
+---
+import * as fashionDoc from "@/content/fashion.md"
+import type { FashionWork } from "@/types/fashion"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const fashionWorks: FashionWork[] = ((fashionDoc as any).frontmatter?.works ||
+  []) as FashionWork[]
+---
+
+<!-- FASHION DETAIL LIGHTBOX MODAL -->
+<div
+  id="fashion-modal"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 pt-[calc(1rem+env(safe-area-inset-top,0px))] pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pl-[calc(1rem+env(safe-area-inset-left,0px))] pr-[calc(1rem+env(safe-area-inset-right,0px))] opacity-0 pointer-events-none transition-opacity duration-300"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+>
+  <!-- Backdrop -->
+  <div
+    id="fashion-modal-backdrop"
+    class="absolute inset-0 bg-neutral-950/70 backdrop-blur-md"
+  ></div>
+
+  <!-- Modal Content -->
+  <div
+    id="fashion-modal-card"
+    class="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white p-6 sm:p-8 md:p-10 shadow-2xl border border-neutral-900/10 no-scrollbar"
+  >
+    <button
+      id="fashion-modal-close-btn"
+      aria-label={t("modal-close-aria")}
+      class="absolute top-5 right-5 sm:top-7 sm:right-7 flex size-10 items-center justify-center rounded-full bg-neutral-100 text-neutral-800 transition-colors hover:bg-neutral-950 hover:text-white cursor-pointer"
+    >
+      ✕
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
+      <!-- Modal Image -->
+      <div class="aspect-[3/4] w-full overflow-hidden bg-neutral-100 border border-neutral-900/10 shadow-inner">
+        <img
+          id="fashion-modal-img"
+          src=""
+          alt=""
+          class="h-full w-full object-cover"
+        />
+      </div>
+
+      <!-- Modal Info -->
+      <div class="flex flex-col justify-between h-full space-y-6">
+        <div>
+          <div class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-neutral-400 mb-2">
+            <span
+              id="fashion-modal-number"
+              class="font-serif italic font-bold text-neutral-950 text-base"
+            >
+              LOOK Nº 01
+            </span>
+            <span>·</span>
+            <span id="fashion-modal-collection">Collection</span>
+            <span>·</span>
+            <span id="fashion-modal-year">2026</span>
+          </div>
+
+          <h3
+            id="fashion-modal-title"
+            class="font-serif text-3xl sm:text-4xl text-neutral-900 mb-4"
+          >
+            Look Title
+          </h3>
+
+          <div class="p-4 bg-neutral-50 border border-neutral-900/5 mb-5 space-y-1 font-mono text-xs text-neutral-600">
+            <div>
+              <span class="text-neutral-400">{t("modal-materials-label")}</span>{" "}
+              <span id="fashion-modal-materials">Raw silk & linen</span>
+            </div>
+            <div>
+              <span class="text-neutral-400">{t("modal-season-label")}</span>{" "}
+              <span id="fashion-modal-season">Atelier Edition</span>
+            </div>
+            <div>
+              <span class="text-neutral-400">
+                {t("modal-provenance-label")}
+              </span>{" "}
+              <span>{t("modal-provenance-val")}</span>
+            </div>
+          </div>
+
+          <blockquote class="border-l-2 border-neutral-900 pl-4 my-4 font-serif text-sm italic text-neutral-700 leading-relaxed">
+            <span id="fashion-modal-quote">"Quote placeholder"</span>
+          </blockquote>
+
+          <div class="space-y-3 font-serif text-sm text-neutral-600 leading-relaxed">
+            <p id="fashion-modal-desc">Description placeholder</p>
+            <p class="text-xs text-neutral-500 font-mono">
+              {t("modal-artisan-note")}
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-neutral-900/10 flex flex-col sm:flex-row gap-3">
+          <button
+            type="button"
+            id="fashion-modal-inquire-whatsapp"
+            data-contact-action="whatsapp"
+            class="flex-1 flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 font-mono text-xs uppercase tracking-wider text-white transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+          >
+            {t("modal-inquire-whatsapp")}
+          </button>
+          <button
+            type="button"
+            id="fashion-modal-inquire-email"
+            data-contact-action="email"
+            class="flex items-center justify-center rounded-full border border-neutral-900/20 px-6 py-3 font-mono text-xs uppercase tracking-wider text-neutral-900 hover:bg-neutral-100 transition-colors cursor-pointer"
+          >
+            {t("modal-inquire-email")}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Embedded Fashion Works Data -->
+<script
+  id="fashion-data"
+  type="application/json"
+  set:html={JSON.stringify(fashionWorks)}
+/>

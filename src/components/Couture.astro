@@ -1,0 +1,320 @@
+---
+import * as fashionDoc from "@/content/fashion.md"
+import type { FashionWork } from "@/types/fashion"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+import { Picture } from "astro:assets"
+import type { ImageMetadata } from "astro"
+
+const fashionImageModules = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/img/fashion-*.jpg",
+  { eager: true },
+)
+
+const fashionImageMap: Record<string, ImageMetadata> = {
+  "celestial-monolith":
+    fashionImageModules["/src/assets/img/fashion-01.jpg"].default,
+  "anima-terra": fashionImageModules["/src/assets/img/fashion-02.jpg"].default,
+  "aura-drape": fashionImageModules["/src/assets/img/fashion-03.jpg"].default,
+  "the-mystics-mantle":
+    fashionImageModules["/src/assets/img/fashion-04.jpg"].default,
+  "translucent-veil":
+    fashionImageModules["/src/assets/img/fashion-05.jpg"].default,
+  "sanctuary-vestment-01":
+    fashionImageModules["/src/assets/img/fashion-06.jpg"].default,
+}
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const fashionWorks: FashionWork[] = ((fashionDoc as any).frontmatter?.works ||
+  (fashionDoc as any).frontmatter?.fashionWorks ||
+  []) as FashionWork[]
+const totalLooks = fashionWorks.length
+const totalLooksDisplay = String(totalLooks).padStart(2, "0")
+---
+
+<section
+  id="fashion"
+  class="couture-section relative z-10 w-full min-h-screen min-h-svh min-h-dvh flex flex-col justify-between bg-white/80 pt-16 sm:pt-20 pb-8 sm:pb-10 border-b border-neutral-900/15 overflow-hidden"
+>
+  <!-- 1. Centered Section Introduction (Appears once in center, fades away as you scroll) -->
+  <div
+    id="fashion-intro-center"
+    class="fashion-intro-center absolute inset-0 z-30 flex flex-col items-center justify-center px-4 sm:px-8 text-center pointer-events-none will-change-transform bg-white/95 backdrop-blur-xs"
+  >
+    <div class="max-w-2xl mx-auto space-y-4">
+      <div class="font-mono text-xs uppercase tracking-widest text-neutral-500 flex items-center justify-center gap-2">
+        <span>
+          [ [{" "}
+          <span class="inline-block size-1.5 rounded-full bg-teal-500 animate-pulse align-middle mr-1.5"></span>
+          {t("fashion-section-vol")} · {t("fashion-season-year")} ] ]
+        </span>
+      </div>
+
+      <h2 class="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight text-neutral-950 leading-none">
+        {t("fashion-section-title")}
+      </h2>
+
+      <p class="font-mono text-xs sm:text-sm uppercase tracking-wider text-neutral-500 max-w-lg mx-auto">
+        {t("fashion-materials-strip")}
+      </p>
+
+      <p class="font-serif italic text-sm sm:text-base text-neutral-700 max-w-md mx-auto leading-relaxed">
+        "Conceived as spatial sanctuary—a meditative architecture for the body,
+        hand-tailored from raw organic textiles."
+      </p>
+
+      <div class="pt-4 font-mono text-xs uppercase tracking-widest text-neutral-400 flex items-center justify-center gap-2">
+        <span class="inline-block animate-bounce text-sm">↓</span>
+        <span>{t("runway-cue")}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Runway HUD Header (Reveals after Intro Fades Out) -->
+  <div
+    id="fashion-hud"
+    class="fashion-hud container mx-auto px-4 sm:px-8 pt-2 pb-3 flex items-center justify-between border-b border-neutral-900/10 opacity-0 shrink-0 z-20 pointer-events-none transition-opacity duration-300"
+  >
+    <div class="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-600">
+      <span>
+        [{" "}
+        <span class="inline-block size-1.5 rounded-full bg-teal-500 animate-pulse align-middle mr-1.5"></span>
+        {t("fashion-section-title")} ]
+      </span>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-500">{t("fashion-runway-archive")}</span>
+    </div>
+
+    <div class="font-mono text-xs text-neutral-600 tracking-wider">
+      <span class="text-neutral-400">{t("runway-stage-label")}</span>{" "}
+      <span class="font-bold text-neutral-900">{t("runway-look-label")}</span>{" "}
+      <span
+        id="active-runway-index"
+        class="font-bold text-neutral-950 font-mono text-sm sm:text-base"
+      >
+        01
+      </span>{" "}
+      / {totalLooksDisplay}
+    </div>
+  </div>
+
+  <!-- 3. HIGH-FASHION RUNWAY RAMP STAGE -->
+  <div
+    id="couture-runway-stage"
+    class="relative w-full flex-1 flex items-center justify-center min-h-[490px] sm:min-h-[550px] px-4 sm:px-8 my-auto overflow-visible"
+  >
+    <!-- Runway Floor Ambience & Perspective Guidelines -->
+    <div
+      class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-40"
+      aria-hidden="true"
+    >
+      <div class="w-full max-w-2xl h-full border-x border-dashed border-neutral-900/10 relative">
+        <div class="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px border-l border-dotted border-neutral-900/10"></div>
+        <!-- Corner Wing Markers: Prominently visible across both mobile and desktop screens -->
+        <span class="block absolute bottom-2 left-1.5 sm:left-2 font-mono text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-wider sm:tracking-widest text-neutral-400 select-none pointer-events-none z-10">
+          [ {t("runway-wing-sw")} ]
+        </span>
+        <span class="block absolute bottom-2 right-1.5 sm:right-2 font-mono text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-wider sm:tracking-widest text-neutral-400 select-none pointer-events-none z-10 text-right">
+          [ {t("runway-wing-se")} ]
+        </span>
+        <span class="block absolute top-2 left-1.5 sm:left-2 font-mono text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-wider sm:tracking-widest text-neutral-400 select-none pointer-events-none z-10">
+          [ {t("runway-exit-nw")} ]
+        </span>
+        <span class="block absolute top-2 right-1.5 sm:right-2 font-mono text-[7px] sm:text-[8px] md:text-[9px] uppercase tracking-wider sm:tracking-widest text-neutral-400 select-none pointer-events-none z-10 text-right">
+          [ {t("runway-exit-ne")} ]
+        </span>
+      </div>
+    </div>
+
+    <!-- Runway Model Stage Centerpiece (Supports 3D Card Flipping) -->
+    <div
+      id="couture-runway-podium"
+      class="relative w-full max-w-sm sm:max-w-md lg:max-w-lg h-[490px] sm:h-[540px] md:h-[580px] mx-auto select-none"
+      style="perspective: 1400px;"
+    >
+      <!-- Runway Looks (6 Models with 3D Flip capability) -->
+      {fashionWorks.map((work, idx) => (
+        <article
+          class="fashion-runway-card fashion-card group absolute inset-0 w-full h-full shadow-2xl cursor-pointer will-change-transform"
+          data-fashion-id={work.id}
+          data-index={String(idx + 1).padStart(2, "0")}
+          style="transform-style: preserve-3d;"
+        >
+          <!-- Front Face: Look Details & Photography -->
+          <div
+            class="fashion-card-face fashion-card-front absolute inset-0 w-full h-full flex flex-col justify-between border border-neutral-900/20 bg-white overflow-hidden"
+            style="backface-visibility: hidden; -webkit-backface-visibility: hidden;"
+          >
+            <!-- Card Header with Technical Archival Tagging (Fixed Height) -->
+            <div class="flex items-center justify-between px-4 sm:px-5 py-2.5 border-b border-neutral-900/10 font-mono text-xs uppercase tracking-wider text-neutral-500 shrink-0 bg-neutral-50/80">
+              <div class="flex items-center gap-2">
+                <span class="inline-block size-1.5 rounded-full bg-teal-500 animate-pulse"></span>
+                <span class="font-serif text-sm font-bold italic text-neutral-950">
+                  {t("fashion-look-prefix")} {work.number}
+                </span>
+              </div>
+              <span class="text-[11px] text-neutral-400">{work.season}</span>
+            </div>
+
+            <!-- Image Frame with Picture component -->
+            <div class="relative h-[250px] sm:h-[290px] md:h-[320px] w-full shrink-0 overflow-hidden bg-neutral-100">
+              {fashionImageMap[work.id] ? (
+                <Picture
+                  src={fashionImageMap[work.id]}
+                  formats={["avif", "webp"]}
+                  fallbackFormat="jpg"
+                  alt={work.alt}
+                  loading="lazy"
+                  decoding="async"
+                  class="fashion-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+                />
+              ) : (
+                <img
+                  src={work.image}
+                  alt={work.alt}
+                  loading="lazy"
+                  decoding="async"
+                  class="fashion-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+                />
+              )}
+
+              <!-- Hover Overlay -->
+              <div class="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-950/20 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+                <span class="bg-white/95 px-3.5 py-1.5 border border-neutral-900/20 font-mono text-xs uppercase tracking-wider text-neutral-900 shadow-md">
+                  [ [ {t("fashion-expand-look")} ] ]
+                </span>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="flex flex-col justify-between p-3.5 sm:p-5 flex-1 min-h-0 bg-white">
+              <div>
+                <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 block mb-0.5">
+                  [ {work.collection} ]
+                </span>
+                <h3 class="font-serif text-lg sm:text-2xl text-neutral-950 mb-1 group-hover:text-purple-900 transition-colors line-clamp-1 leading-tight">
+                  {work.title}
+                </h3>
+                <p class="font-mono text-[10px] sm:text-[11px] text-neutral-500 mb-1.5 line-clamp-1">
+                  {work.materials}
+                </p>
+                <p class="font-serif text-xs italic text-neutral-600 line-clamp-2 leading-relaxed">
+                  "{work.quote}"
+                </p>
+              </div>
+
+              <div class="pt-2 mt-auto border-t border-neutral-900/10 flex items-center justify-between shrink-0">
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-neutral-950 hover:text-purple-700 transition-colors cursor-pointer group-hover:translate-x-0.5"
+                >
+                  <span>{t("fashion-view-concept")}</span>
+                  <span>→</span>
+                </button>
+                <span class="font-mono text-[10px] text-neutral-600 uppercase tracking-wider bg-neutral-100 px-2.5 py-1 border border-neutral-900/10">
+                  [ {t("badge-made-to-order")} ]
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Back Face: Luxury Atelier Reverse Seal (Displayed upon 3D flip-over!) -->
+          <div
+            class="fashion-card-face fashion-card-back absolute inset-0 w-full h-full flex flex-col justify-between p-6 sm:p-8 bg-neutral-950 text-white border border-neutral-800 shadow-2xl"
+            style="transform: rotateY(180deg); backface-visibility: hidden; -webkit-backface-visibility: hidden;"
+          >
+            <div class="flex items-center justify-between pb-3 border-b border-white/15 font-mono text-[10px] uppercase tracking-widest text-neutral-400">
+              <span>[ {t("fashion-runway-archive")} // VOL. II ]</span>
+              <span>
+                {t("runway-look-label")} {work.number}
+              </span>
+            </div>
+
+            <div class="my-auto text-center space-y-3">
+              <span class="inline-block text-3xl font-serif text-teal-400">
+                ✦
+              </span>
+              <h4 class="font-serif text-2xl sm:text-3xl text-white uppercase tracking-tight">
+                {work.title}
+              </h4>
+              <p class="font-mono text-xs text-neutral-400 uppercase tracking-widest">
+                {work.collection}
+              </p>
+              <div class="w-12 h-px bg-white/20 mx-auto my-2"></div>
+              <p class="font-serif italic text-xs text-neutral-300 max-w-xs mx-auto">
+                "{work.quote}"
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-white/15 flex items-center justify-between font-mono text-[9px] uppercase tracking-widest text-neutral-400">
+              <span>RABBITHOLE ATELIER</span>
+              <span>JALANDHAR, INDIA</span>
+            </div>
+          </div>
+        </article>
+      ))}
+
+      <!-- Runway Finale: Bespoke Atelier Commissions Card -->
+      <article
+        class="fashion-runway-card fashion-finale-card absolute inset-0 w-full h-full flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/20 bg-neutral-950 text-white shadow-2xl cursor-pointer will-change-transform"
+        data-index="07"
+      >
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-white/10 font-mono text-[11px] uppercase tracking-wider text-neutral-400 mb-4">
+            <span>[ RUNWAY FINALE // ARCHIVE ]</span>
+            <span>PRIVATE ATELIER</span>
+          </div>
+
+          <h3 class="font-serif text-2xl sm:text-4xl italic text-white mb-3 leading-tight">
+            {t("runway-finale-title")}
+          </h3>
+
+          <p class="font-serif text-xs sm:text-sm text-neutral-300 leading-relaxed mb-6 space-y-3">
+            {t("runway-finale-text")}
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <button
+            type="button"
+            data-contact-action="whatsapp"
+            data-message="Hello, I would like to inquire about bespoke couture commissions and wearable art by Eshale."
+            class="flex w-full items-center justify-center rounded-full bg-white px-5 py-3 font-mono text-xs uppercase tracking-wider text-neutral-950 transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer font-bold"
+          >
+            Inquire Bespoke Look via WhatsApp
+          </button>
+          <button
+            type="button"
+            data-contact-action="email"
+            data-subject="Inquiry: Custom Couture Commission by Eshale"
+            class="flex w-full items-center justify-center rounded-full border border-white/30 px-5 py-3 font-mono text-xs uppercase tracking-wider text-white transition-colors hover:bg-white/10 cursor-pointer"
+          >
+            Email Atelier Desk
+          </button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- 4. Runway Progress Bar -->
+  <div class="container mx-auto px-4 sm:px-8 mt-4 sm:mt-6 flex items-center justify-center shrink-0">
+    <div
+      class="h-1 w-48 sm:w-64 bg-neutral-200/80 rounded-full overflow-hidden"
+      role="progressbar"
+      aria-label="Runway looks progress"
+    >
+      <div
+        id="runway-progress-bar"
+        class="h-full w-1/7 bg-teal-800 transition-all duration-150"
+      ></div>
+    </div>
+  </div>
+</section>
+
+<!-- Embedded Fashion Works Data -->
+<script
+  id="fashion-data"
+  type="application/json"
+  set:html={JSON.stringify(fashionWorks)}
+/>

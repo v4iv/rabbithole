@@ -1,6 +1,10 @@
+media:
+  input: src/assets/img
+  output: /src/assets/img
+
 content:
   - name: ui
-    label: UI
+    label: UI Translations
     type: file
     path: src/content/translations/ui.json
     fields:
@@ -9,35 +13,618 @@ content:
         type: object
         fields:
           - name: app-name
-            label: App Name
+            label: "App Name"
             type: string
           - name: app-shortname
-            label: App Shortname
+            label: "App Shortname"
+            type: string
+          - name: title
+            label: "Title"
+            type: string
+          - name: description
+            label: "Description"
+            type: text
+          - name: summer-camp-cta
+            label: "Summer Camp Cta"
+            type: string
+          - name: signature-by
+            label: "Signature By"
+            type: string
+          - name: signature-name
+            label: "Signature Name"
+            type: string
+          - name: instagram
+            label: "Instagram"
+            type: string
+          - name: whatsapp
+            label: "Whatsapp"
+            type: string
+          - name: email
+            label: "Email"
+            type: string
+          - name: maps
+            label: "Maps"
+            type: string
+          - name: explore-catalogue
+            label: "Explore Catalogue"
+            type: string
+          - name: issue-tag
+            label: "Issue Tag"
+            type: string
+          - name: catalogue-vol
+            label: "Catalogue Vol"
+            type: string
+          - name: catalogue-season
+            label: "Catalogue Season"
+            type: string
+          - name: catalogue-title
+            label: "Catalogue Title"
+            type: string
+          - name: catalogue-plate
+            label: "Catalogue Plate"
+            type: string
+          - name: catalogue-prev-artwork
+            label: "Catalogue Prev Artwork"
+            type: string
+          - name: catalogue-next-artwork
+            label: "Catalogue Next Artwork"
+            type: string
+          - name: catalogue-mediums-strip
+            label: "Catalogue Mediums Strip"
+            type: text
+          - name: catalogue-nav-cue
+            label: "Catalogue Nav Cue"
+            type: string
+          - name: foreword-tag
+            label: "Foreword Tag"
+            type: string
+          - name: foreword-quote
+            label: "Foreword Quote"
+            type: text
+          - name: foreword-text
+            label: "Foreword Text"
+            type: text
+          - name: foreword-dir
+            label: "Foreword Dir"
+            type: string
+          - name: foreword-est
+            label: "Foreword Est"
+            type: string
+          - name: expand-plate
+            label: "Expand Plate"
+            type: string
+          - name: details-and-statement
+            label: "Details And Statement"
+            type: string
+          - name: status-available
+            label: "Status Available"
+            type: string
+          - name: acquisitions-tag
+            label: "Acquisitions Tag"
+            type: string
+          - name: acquisitions-title
+            label: "Acquisitions Title"
+            type: string
+          - name: acquisitions-text
+            label: "Acquisitions Text"
+            type: text
+          - name: inquire-whatsapp
+            label: "Inquire Whatsapp"
+            type: string
+          - name: email-studio
+            label: "Email Studio"
+            type: string
+          - name: archive-label
+            label: "Archive Label"
+            type: string
+          - name: modal-close
+            label: "Modal Close"
+            type: string
+          - name: modal-medium-label
+            label: "Modal Medium Label"
+            type: string
+          - name: modal-dimensions-label
+            label: "Modal Dimensions Label"
+            type: string
+          - name: modal-provenance-label
+            label: "Modal Provenance Label"
+            type: string
+          - name: modal-provenance-val
+            label: "Modal Provenance Val"
+            type: string
+          - name: modal-authenticity-note
+            label: "Modal Authenticity Note"
+            type: text
+          - name: modal-inquire-whatsapp
+            label: "Modal Inquire Whatsapp"
+            type: string
+          - name: modal-inquire-email
+            label: "Modal Inquire Email"
+            type: string
+          - name: colophon-tag
+            label: "Colophon Tag"
+            type: string
+          - name: colophon-curator-tag
+            label: "Colophon Curator Tag"
+            type: string
+          - name: curator-name
+            label: "Curator Name"
+            type: string
+          - name: curator-handle
+            label: "Curator Handle"
+            type: string
+          - name: colophon-location-tag
+            label: "Colophon Location Tag"
+            type: string
+          - name: studio-location-city
+            label: "Studio Location City"
+            type: string
+          - name: studio-location-note
+            label: "Studio Location Note"
+            type: string
+          - name: colophon-connect-tag
+            label: "Colophon Connect Tag"
+            type: string
+          - name: instagram-label
+            label: "Instagram Label"
+            type: string
+          - name: instagram-handle
+            label: "Instagram Handle"
+            type: string
+          - name: phone-whatsapp-label
+            label: "Phone Whatsapp Label"
+            type: string
+          - name: email-label
+            label: "Email Label"
+            type: string
+          - name: click-to-view
+            label: "Click To View"
+            type: string
+          - name: copied-badge
+            label: "Copied Badge"
+            type: string
+          - name: action-chat
+            label: "Action Chat"
+            type: string
+          - name: action-send-email
+            label: "Action Send Email"
+            type: string
+          - name: action-copy
+            label: "Action Copy"
+            type: string
+          - name: studio-pin-label
+            label: "Studio Pin Label"
+            type: string
+          - name: open-google-maps
+            label: "Open Google Maps"
+            type: string
+          - name: colophon-design-tag
+            label: "Colophon Design Tag"
+            type: string
+          - name: designed-by-vaibhav
+            label: "Designed By Vaibhav"
+            type: string
+          - name: all-rights-reserved
+            label: "All Rights Reserved"
+            type: string
+          - name: back-to-cover
+            label: "Back To Cover"
+            type: string
+          - name: nav-profile
+            label: "Nav Profile"
+            type: string
+          - name: nav-artworks
+            label: "Nav Artworks"
+            type: string
+          - name: nav-couture
+            label: "Nav Couture"
+            type: string
+          - name: nav-contact
+            label: "Nav Contact"
+            type: string
+          - name: about-eshale-title
+            label: "About Eshale Title"
+            type: string
+          - name: about-eshale-subtitle
+            label: "About Eshale Subtitle"
+            type: string
+          - name: about-eshale-folio
+            label: "About Eshale Folio"
+            type: string
+          - name: about-back-to-studio
+            label: "About Back To Studio"
+            type: string
+          - name: bio-heading
+            label: "Bio Heading"
+            type: string
+          - name: bio-paragraph-1
+            label: "Bio Paragraph 1"
+            type: text
+          - name: bio-paragraph-2
+            label: "Bio Paragraph 2"
+            type: text
+          - name: bio-disciplines-tag
+            label: "Bio Disciplines Tag"
+            type: string
+          - name: bio-statement-tag
+            label: "Bio Statement Tag"
+            type: string
+          - name: bio-portrait-alt
+            label: "Bio Portrait Alt"
+            type: text
+          - name: bio-profile-prefix
+            label: "Bio Profile Prefix"
+            type: string
+          - name: bio-location
+            label: "Bio Location"
+            type: string
+          - name: bio-coordinates
+            label: "Bio Coordinates"
+            type: string
+          - name: bio-portrait-badge
+            label: "Bio Portrait Badge"
+            type: string
+          - name: bio-portrait-sub
+            label: "Bio Portrait Sub"
+            type: string
+          - name: bio-core-ethos-tag
+            label: "Bio Core Ethos Tag"
+            type: string
+          - name: bio-core-ethos-title
+            label: "Bio Core Ethos Title"
+            type: string
+          - name: bio-core-ethos-text
+            label: "Bio Core Ethos Text"
+            type: text
+          - name: bio-dossier-tag
+            label: "Bio Dossier Tag"
+            type: string
+          - name: bio-director-tag
+            label: "Bio Director Tag"
+            type: string
+          - name: bio-archive-tag
+            label: "Bio Archive Tag"
+            type: string
+          - name: bio-atelier-tag
+            label: "Bio Atelier Tag"
+            type: string
+          - name: bio-dossier-headline-tag
+            label: "Bio Dossier Headline Tag"
+            type: string
+          - name: bio-disciplines-count
+            label: "Bio Disciplines Count"
+            type: string
+          - name: bio-practice-tag
+            label: "Bio Practice Tag"
+            type: string
+          - name: bio-atelier-brand
+            label: "Bio Atelier Brand"
+            type: string
+          - name: magazine-cover-edition
+            label: "Magazine Cover Edition"
+            type: string
+          - name: magazine-scroll-cue
+            label: "Magazine Scroll Cue"
+            type: string
+          - name: catalogue-deck-cue
+            label: "Catalogue Deck Cue"
+            type: string
+          - name: catalogue-curated-archive
+            label: "Catalogue Curated Archive"
+            type: string
+          - name: catalogue-inquire-availability
+            label: "Catalogue Inquire Availability"
+            type: string
+          - name: catalogue-inquire-original
+            label: "Catalogue Inquire Original"
+            type: string
+          - name: catalogue-view-statement
+            label: "Catalogue View Statement"
+            type: string
+          - name: catalogue-curatorial-statement-tag
+            label: "Catalogue Curatorial Statement Tag"
+            type: string
+          - name: catalogue-details-tag
+            label: "Catalogue Details Tag"
+            type: string
+          - name: fashion-runway-archive
+            label: "Fashion Runway Archive"
+            type: string
+          - name: runway-stage-label
+            label: "Runway Stage Label"
+            type: string
+          - name: runway-look-label
+            label: "Runway Look Label"
+            type: string
+          - name: runway-look-of
+            label: "Runway Look Of"
+            type: string
+          - name: runway-cue
+            label: "Runway Cue"
+            type: string
+          - name: runway-wing-sw
+            label: "Runway Wing Sw"
+            type: string
+          - name: runway-wing-se
+            label: "Runway Wing Se"
+            type: string
+          - name: runway-exit-nw
+            label: "Runway Exit Nw"
+            type: string
+          - name: runway-exit-ne
+            label: "Runway Exit Ne"
+            type: string
+          - name: runway-spotlight-pose
+            label: "Runway Spotlight Pose"
+            type: string
+          - name: runway-turning-exit
+            label: "Runway Turning Exit"
+            type: string
+          - name: runway-finale-title
+            label: "Runway Finale Title"
+            type: string
+          - name: runway-finale-text
+            label: "Runway Finale Text"
+            type: text
+          - name: colophon-directory-tag
+            label: "Colophon Directory Tag"
+            type: string
+          - name: ticker-text
+            label: "Ticker Text"
+            type: text
+          - name: discipline-fine-art
+            label: "Discipline Fine Art"
+            type: string
+          - name: discipline-fashion
+            label: "Discipline Fashion"
+            type: string
+          - name: discipline-direction
+            label: "Discipline Direction"
+            type: string
+          - name: fashion-section-vol
+            label: "Fashion Section Vol"
+            type: string
+          - name: fashion-section-title
+            label: "Fashion Section Title"
+            type: string
+          - name: fashion-season-year
+            label: "Fashion Season Year"
+            type: string
+          - name: fashion-section-description
+            label: "Fashion Section Description"
+            type: text
+          - name: fashion-badge-made-to-order
+            label: "Fashion Badge Made To Order"
+            type: string
+          - name: fashion-materials-strip
+            label: "Fashion Materials Strip"
+            type: text
+          - name: fashion-look-prefix
+            label: "Fashion Look Prefix"
+            type: string
+          - name: fashion-expand-look
+            label: "Fashion Expand Look"
+            type: string
+          - name: fashion-view-concept
+            label: "Fashion View Concept"
+            type: string
+          - name: badge-made-to-order
+            label: "Badge Made To Order"
+            type: string
+          - name: explore-fashion-cta
+            label: "Explore Fashion Cta"
+            type: string
+          - name: explore-artworks-cta
+            label: "Explore Artworks Cta"
+            type: string
+          - name: inquire-couture
+            label: "Inquire Couture"
+            type: string
+          - name: modal-collection-label
+            label: "Modal Collection Label"
+            type: string
+          - name: modal-materials-label
+            label: "Modal Materials Label"
+            type: string
+          - name: modal-season-label
+            label: "Modal Season Label"
+            type: string
+          - name: modal-artisan-note
+            label: "Modal Artisan Note"
+            type: text
+          - name: modal-close-aria
+            label: "Modal Close Aria"
+            type: string
+          - name: 404-tag
+            label: "404 Tag"
+            type: string
+          - name: 404-title
+            label: "404 Title"
+            type: string
+          - name: 404-subtitle
+            label: "404 Subtitle"
+            type: string
+          - name: 404-message
+            label: "404 Message"
+            type: text
+          - name: 404-back-home
+            label: "404 Back Home"
+            type: string
+          - name: 404-meta-title
+            label: "404 Meta Title"
+            type: string
+
+  - name: bio
+    label: Artist Bio & Manifesto
+    type: file
+    path: src/content/bio.md
+    fields:
+      - name: name
+        label: Name
+        type: string
+      - name: role
+        label: Role
+        type: string
+      - name: image
+        label: Portrait Image
+        type: image
+      - name: location
+        label: Location
+        type: string
+      - name: coordinates
+        label: Coordinates
+        type: string
+      - name: profileTag
+        label: Profile Tag
+        type: string
+      - name: quote
+        label: Cover Pull Quote
+        type: text
+      - name: manifestoTag
+        label: Manifesto Tag
+        type: string
+      - name: manifestoTitle
+        label: Manifesto Title
+        type: string
+      - name: manifestoText
+        label: Manifesto Text
+        type: text
+      - name: imageCaptionRole
+        label: Image Caption Role
+        type: string
+      - name: imageCaptionLocation
+        label: Image Caption Location
+        type: string
+      - name: statementHeading
+        label: Statement Heading
+        type: string
+      - name: statementParagraph1
+        label: Statement Paragraph 1
+        type: text
+      - name: statementParagraph2
+        label: Statement Paragraph 2
+        type: text
+      - name: statementQuote
+        label: Statement Quote
+        type: text
+      - name: instagramHandle
+        label: Instagram Handle
+        type: string
+      - name: instagramUrl
+        label: Instagram URL
+        type: string
+      - name: stats
+        label: Atelier Stats
+        type: list
+        fields:
+          - name: label
+            label: Metric Label
+            type: string
+          - name: val
+            label: Metric Value
+            type: string
+      - name: disciplines
+        label: Practice Disciplines
+        type: list
+        fields:
+          - name: key
+            label: Key
+            type: string
+          - name: title
+            label: Discipline Title
+            type: string
+          - name: description
+            label: Description
+            type: text
+
+  - name: artworks
+    label: Artworks Catalogue (Vol. I)
+    type: file
+    path: src/content/artworks.md
+    fields:
+      - name: title
+        label: Collection Title
+        type: string
+      - name: artworks
+        label: Artworks List
+        type: list
+        fields:
+          - name: id
+            label: Unique Slug / ID
+            type: string
+          - name: number
+            label: Plate Number (e.g. 01)
             type: string
           - name: title
             label: Title
             type: string
+          - name: subtitle
+            label: Subtitle / Series
+            type: string
+          - name: medium
+            label: Medium
+            type: string
+          - name: dimensions
+            label: Dimensions
+            type: string
+          - name: year
+            label: Year
+            type: string
+          - name: image
+            label: Artwork Image
+            type: image
+          - name: alt
+            label: Accessibility Alt Text
+            type: string
           - name: description
-            label: Description
+            label: Curatorial Description
+            type: text
+          - name: quote
+            label: Philosophical Quote
+            type: text
+
+  - name: fashion
+    label: Couture & Wearable Art (Vol. II)
+    type: file
+    path: src/content/fashion.md
+    fields:
+      - name: title
+        label: Collection Title
+        type: string
+      - name: works
+        label: Runway Looks
+        type: list
+        fields:
+          - name: id
+            label: Unique Slug / ID
             type: string
-          - name: summer-camp-cta
-            label: Summer Camp CTA
+          - name: number
+            label: Look Number (e.g. 01)
             type: string
-          - name: signature-by
-            label: Signature By
+          - name: title
+            label: Look Title
             type: string
-          - name: signature-name
-            label: Signature Name
+          - name: collection
+            label: Sub-Collection Name
             type: string
-          - name: instagram
-            label: Instagram
+          - name: materials
+            label: Materials & Textile Foundation
             type: string
-          - name: whatsapp
-            label: WhatsApp
+          - name: season
+            label: Season / Edition
             type: string
-          - name: email
-            label: Email
+          - name: year
+            label: Year
             type: string
-          - name: maps
-            label: Google Maps
+          - name: image
+            label: Garment Image
+            type: image
+          - name: alt
+            label: Accessibility Alt Text
             type: string
+          - name: description
+            label: Concept & Tailoring Description
+            type: text
+          - name: quote
+            label: Garment Pull Quote
+            type: text

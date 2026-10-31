@@ -3,10 +3,15 @@ import HeroImage from "@/assets/hero.svg"
 import Navbar from "@/components/Navbar.astro"
 import Layout from "@/layouts/Layout.astro"
 import Links from "@/components/Links.astro"
-import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+import {
+  getLangFromUrl,
+  useTranslations,
+  // useTranslatedPath,
+} from "@/i18n/utils"
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
+// const translatePath = useTranslatedPath(lang)
 ---
 
 <Layout>
@@ -18,25 +23,31 @@ const t = useTranslations(lang)
     ></div>
 
     <Navbar />
-    <section class="relative z-10 flex min-h-screen min-h-svh min-h-dvh items-center justify-center pb-24 sm:pb-28">
+
+    <!-- HERO SECTION -->
+    <section
+      id="hero"
+      class="hero-section relative z-10 flex min-h-screen min-h-svh min-h-dvh flex-col items-center justify-center pb-24 sm:pb-28"
+    >
       <div class="hero-container relative container mx-auto p-5 will-change-transform">
-        <!-- hero -->
+        <!-- hero logo -->
         <HeroImage class="hero-svg w-full select-none" />
 
-        <!-- subtitle -->
+        <!-- subtitle with link to Eshale's about page -->
         <div class="hero-subtitle mt-5 flex items-start justify-end">
           {t("signature-by")}&nbsp;
           <a
-            target="_blank"
             href="https://instagram.com/its_eshale"
+            target="blank"
             rel="noopener nofollow"
-            class="signature-link group flex items-start gap-1"
+            class="signature-link group flex items-start gap-1 cursor-pointer"
+            aria-label="About Eshale"
           >
             <span class="signature-text border-b border-dashed font-serif text-2xl italic transition-colors hover:text-teal-400">
               {t("signature-name")}
             </span>
             <svg
-              class="signature-arrow size-3 transition-transform"
+              class="signature-arrow size-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               role="presentation"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -49,14 +60,20 @@ const t = useTranslations(lang)
           </a>
         </div>
       </div>
+
+      <!-- Hero Bottom Bar: Social Links Dock -->
+      <div class="hero-bottom-bar pointer-events-none absolute bottom-[calc(2.2rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full items-center justify-center px-6 sm:bottom-10 sm:px-12">
+        <div class="pointer-events-auto">
+          <Links />
+        </div>
+      </div>
     </section>
-    <!-- links -->
-    <Links />
+
     <!-- credits -->
-    <footer class="page-footer pointer-events-none absolute right-5 bottom-[calc(0.35rem+env(safe-area-inset-bottom,0px))] z-20 flex w-full justify-end">
+    <footer class="page-footer pointer-events-none absolute right-4 sm:right-6 bottom-[calc(0.5rem+env(safe-area-inset-bottom,0px))] z-20 flex w-full justify-end px-2">
       <a
         href="https://waybove.pages.dev"
-        class="pointer-events-auto font-mono text-xs lowercase"
+        class="pointer-events-auto font-mono text-xs lowercase text-neutral-600 hover:text-neutral-950 transition-colors"
         target="_blank"
         rel="noopener nofollow"
       >

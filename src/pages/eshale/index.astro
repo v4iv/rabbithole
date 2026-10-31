@@ -1,0 +1,50 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import EditorialHeader from "@/components/EditorialHeader.astro"
+import Bio from "@/components/Bio.astro"
+import EditorialTicker from "@/components/EditorialTicker.astro"
+import Catalogue from "@/components/Catalogue.astro"
+import Couture from "@/components/Couture.astro"
+import Colophon from "@/components/Colophon.astro"
+import FashionModal from "@/components/FashionModal.astro"
+import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+---
+
+<Layout title={`${t("about-eshale-title")} — ${t("about-eshale-subtitle")}`}>
+  <main class="relative min-h-screen min-h-svh min-h-dvh overflow-x-hidden bg-[#faf9f6] pb-[env(safe-area-inset-bottom,0px)]">
+    <!-- Ambient watercolor cursor glow -->
+    <div
+      class="cursor-glow pointer-events-none fixed inset-0 z-0 opacity-0"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Editorial Header Navigation -->
+    <EditorialHeader />
+
+    <!-- Bio & Ethereal Artist Profile Section -->
+    <Bio />
+
+    <!-- Continuous Editorial Running Ticker -->
+    <EditorialTicker />
+
+    <!-- Volume I: Artworks & Ceramics Catalogue Section -->
+    <Catalogue />
+
+    <!-- Continuous Editorial Running Ticker -->
+    <EditorialTicker />
+
+    <!-- Volume II: Couture & Wearable Art Section -->
+    <Couture />
+
+    <!-- Colophon Directory & Inquiries Section -->
+    <Colophon />
+  </main>
+
+  <!-- Couture Detail Lightbox Modal -->
+  <FashionModal />
+</Layout>
+
+<script src="@/scripts/animations.ts"></script>
