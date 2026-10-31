@@ -10,7 +10,7 @@ const t = useTranslations(lang)
 ---
 
 <Layout>
-  <main class="relative min-h-screen overflow-x-hidden">
+  <main class="relative min-h-screen min-h-svh min-h-dvh overflow-x-hidden pb-[env(safe-area-inset-bottom,0px)]">
     <!-- Ambient watercolor cursor glow -->
     <div
       class="cursor-glow pointer-events-none fixed inset-0 z-0 opacity-0"
@@ -18,7 +18,7 @@ const t = useTranslations(lang)
     ></div>
 
     <Navbar />
-    <section class="relative z-10 flex min-h-screen items-center justify-center">
+    <section class="relative z-10 flex min-h-screen min-h-svh min-h-dvh items-center justify-center pb-24 sm:pb-28">
       <div class="hero-container relative container mx-auto p-5 will-change-transform">
         <!-- hero -->
         <HeroImage class="hero-svg w-full select-none" />
@@ -53,7 +53,7 @@ const t = useTranslations(lang)
     <!-- links -->
     <Links />
     <!-- credits -->
-    <footer class="page-footer pointer-events-none absolute right-5 bottom-0.5 z-20 flex w-full justify-end">
+    <footer class="page-footer pointer-events-none absolute right-5 bottom-[calc(0.35rem+env(safe-area-inset-bottom,0px))] z-20 flex w-full justify-end">
       <a
         href="https://waybove.pages.dev"
         class="pointer-events-auto font-mono text-xs lowercase"

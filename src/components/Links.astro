@@ -9,7 +9,7 @@ const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 ---
 
-<div class="social-links-bar pointer-events-auto absolute bottom-8 z-30 flex w-full items-center justify-center gap-2">
+<div class="social-links-bar pointer-events-auto absolute bottom-[calc(2rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full items-center justify-center gap-2">
   <a
     aria-label={t("instagram")}
     href="https://instagram.com/rabbitholeartstudio"
