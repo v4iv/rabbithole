@@ -112,6 +112,15 @@ export function setupAnimations() {
     })
   })
 
+  // Back to cover smooth scroll button
+  const scrollToTopBtn = document.getElementById("scroll-to-top-btn")
+  if (scrollToTopBtn) {
+    scrollToTopBtn.addEventListener("click", (e) => {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    })
+  }
+
   /* -------------------------------------------------------------
    * 1. HERO INITIAL STATE (Landing Page)
    * ------------------------------------------------------------- */
@@ -554,7 +563,7 @@ function initEditorialPageAnimations() {
       scrollTrigger: {
         trigger: coverStage,
         start: "top top",
-        end: "+=1200",
+        end: "+=1800",
         pin: true,
         scrub: 0.8,
         anticipatePin: 1,
@@ -566,7 +575,7 @@ function initEditorialPageAnimations() {
       coverTl.fromTo(
         blurbLeft,
         { x: 0, opacity: 1 },
-        { x: -90, opacity: 0, duration: 0.5, ease: "power1.in" },
+        { x: -90, opacity: 0, duration: 0.7, ease: "power1.in" },
         0,
       )
     }
@@ -574,7 +583,7 @@ function initEditorialPageAnimations() {
       coverTl.fromTo(
         blurbRight,
         { x: 0, opacity: 1 },
-        { x: 90, opacity: 0, duration: 0.5, ease: "power1.in" },
+        { x: 90, opacity: 0, duration: 0.7, ease: "power1.in" },
         0,
       )
     }
@@ -582,7 +591,7 @@ function initEditorialPageAnimations() {
       coverTl.fromTo(
         topBar,
         { y: 0, opacity: 1 },
-        { opacity: 0, y: -20, duration: 0.35, ease: "power1.in" },
+        { opacity: 0, y: -20, duration: 0.45, ease: "power1.in" },
         0,
       )
     }
@@ -590,7 +599,7 @@ function initEditorialPageAnimations() {
       coverTl.fromTo(
         coverCoords,
         { y: 0, opacity: 1 },
-        { opacity: 0, y: -20, duration: 0.35, ease: "power1.in" },
+        { opacity: 0, y: -20, duration: 0.45, ease: "power1.in" },
         0,
       )
     }
@@ -598,7 +607,7 @@ function initEditorialPageAnimations() {
       coverTl.fromTo(
         scrollCue,
         { y: 0, opacity: 1 },
-        { opacity: 0, y: -20, duration: 0.3, ease: "power1.in" },
+        { opacity: 0, y: -20, duration: 0.4, ease: "power1.in" },
         0,
       )
     }
@@ -612,7 +621,7 @@ function initEditorialPageAnimations() {
           scale: 0.82,
           opacity: 0,
           y: -40,
-          duration: 0.8,
+          duration: 1.1,
           ease: "power2.inOut",
         },
         0.1,
@@ -627,7 +636,7 @@ function initEditorialPageAnimations() {
         scale: 0.65,
         y: -60,
         opacity: 0,
-        duration: 0.75,
+        duration: 1.0,
         ease: "power2.inOut",
       },
       0.15,
@@ -715,10 +724,13 @@ function initCatalogueInteractions() {
     imageCards.forEach((card, idx) => {
       gsap.set(card, { opacity: idx <= 3 ? 1 : 0.6 })
     })
-    if (detailPanels[0]) {
-      detailPanels[0].style.display = "block"
-      gsap.set(detailPanels[0], { opacity: 1, x: 0 })
-    }
+    detailPanels.forEach((panel, idx) => {
+      gsap.set(panel, {
+        opacity: idx === 0 ? 1 : 0,
+        x: 0,
+        pointerEvents: idx === 0 ? "auto" : "none",
+      })
+    })
     return
   }
 
@@ -744,39 +756,10 @@ function initCatalogueInteractions() {
     })
   })
 
-  // Prepare detail panels: hidden and primed to slide in from right
+  // Prepare detail panels: stacked in grid, hidden and primed to slide in from right
   detailPanels.forEach((panel) => {
-    panel.style.display = "none"
-    gsap.set(panel, { opacity: 0, x: 70 })
+    gsap.set(panel, { opacity: 0, x: 50, pointerEvents: "none" })
   })
-
-  function showDetailPanel(targetIdx: number) {
-    const prevPanel = detailPanels[currentPlateIndex]
-    const nextPanel = detailPanels[targetIdx]
-
-    if (prevPanel && prevPanel !== nextPanel) {
-      gsap.to(prevPanel, {
-        opacity: 0,
-        x: -30,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => {
-          prevPanel.style.display = "none"
-        },
-      })
-    }
-
-    if (nextPanel) {
-      nextPanel.style.display = "block"
-      gsap.fromTo(
-        nextPanel,
-        { opacity: 0, x: 70 },
-        { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", delay: 0.08 },
-      )
-    }
-
-    currentPlateIndex = targetIdx
-  }
 
   function updateCatalogueHUD(progress: number) {
     if (progress < 0.08) {
@@ -792,12 +775,7 @@ function initCatalogueInteractions() {
       Math.floor(plateProgress * totalPlates),
     )
 
-    if (
-      activeIdx !== currentPlateIndex ||
-      detailPanels[activeIdx]?.style.display !== "block"
-    ) {
-      showDetailPanel(activeIdx)
-    }
+    currentPlateIndex = activeIdx
 
     if (indexEl) {
       indexEl.textContent = String(activeIdx + 1).padStart(2, "0")
@@ -818,13 +796,13 @@ function initCatalogueInteractions() {
     })
   }
 
-  // 2. Master Scrub Timeline: Intro Fades -> Cards & HUD Reveal -> Cards Leaf Off Stack & Text Slides In
+  // 2. Master Scrub Timeline: Intro Fades -> Cards & HUD Reveal -> Cards Leaf Off Stack & Text Slides In Synchronously
   const deckTl = gsap.timeline({
     scrollTrigger: {
       trigger: catalogueSection,
       pin: true,
       start: "top top",
-      end: () => `+=${(totalPlates + 1) * 1100}`,
+      end: () => `+=${(totalPlates + 1) * 2000}`,
       scrub: 1.0,
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -877,6 +855,17 @@ function initCatalogueInteractions() {
     deckTl.set(splitStage, { pointerEvents: "auto" }, 0.35)
   }
 
+  // Detail Panel 0 fades in together with stage
+  if (detailPanels[0]) {
+    deckTl.fromTo(
+      detailPanels[0],
+      { opacity: 0, x: 50 },
+      { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" },
+      0.35,
+    )
+    deckTl.set(detailPanels[0], { pointerEvents: "auto" }, 0.35)
+  }
+
   // Fade cards in to physical stack opacities
   imageCards.forEach((card, idx) => {
     deckTl.to(
@@ -890,12 +879,15 @@ function initCatalogueInteractions() {
     )
   })
 
-  // Phase 2: Animate each image card lifting off the deck and next card settling
+  // Phase 2: Animate each image card lifting off the deck and detail panels sliding synchronously
   for (let i = 0; i < totalPlates - 1; i++) {
     const currentCard = imageCards[i]
     const nextCard = imageCards[i + 1]
+    const currentPanel = detailPanels[i]
+    const nextPanel = detailPanels[i + 1]
     const startTime = 0.8 + i * 1.2
 
+    // Card i leaves deck
     deckTl.to(
       currentCard,
       {
@@ -909,6 +901,22 @@ function initCatalogueInteractions() {
       startTime,
     )
 
+    // Panel i slides out to left
+    if (currentPanel) {
+      deckTl.to(
+        currentPanel,
+        {
+          opacity: 0,
+          x: -40,
+          duration: 0.45,
+          ease: "power2.in",
+        },
+        startTime,
+      )
+      deckTl.set(currentPanel, { pointerEvents: "none" }, startTime + 0.45)
+    }
+
+    // Card i + 1 settles to top of deck
     deckTl.to(
       nextCard,
       {
@@ -921,6 +929,22 @@ function initCatalogueInteractions() {
       },
       startTime + 0.15,
     )
+
+    // Panel i + 1 slides in from right
+    if (nextPanel) {
+      deckTl.fromTo(
+        nextPanel,
+        { opacity: 0, x: 50 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.55,
+          ease: "power2.out",
+        },
+        startTime + 0.3,
+      )
+      deckTl.set(nextPanel, { pointerEvents: "auto" }, startTime + 0.3)
+    }
   }
 
   const st = deckTl.scrollTrigger
@@ -1197,7 +1221,7 @@ function initFashionInteractions() {
       trigger: fashionSection,
       pin: true,
       start: "top top",
-      end: () => `+=${(totalRunwayCards + 1) * 1400}`,
+      end: () => `+=${(totalRunwayCards + 1) * 2800}`,
       scrub: 1.0,
       anticipatePin: 1,
       invalidateOnRefresh: true,
@@ -1247,22 +1271,23 @@ function initFashionInteractions() {
         y: 0,
         rotation: 0,
         rotateY: 0,
-        duration: 0.85,
+        duration: 0.95,
         ease: "power2.out",
       },
       0.4,
     )
 
     // Look 01 pauses in center spotlight, then turns around (flips rotateY -180) and exits to top-left corner
+    // Scroll required for exit animation is substantially increased
     runwayTl.to(
       firstCard,
       {
         rotateY: -180,
-        x: -wingX * 0.45,
-        duration: 0.65,
+        x: -wingX * 0.4,
+        duration: 1.4,
         ease: "power2.inOut",
       },
-      2.1,
+      2.2,
     )
     runwayTl.to(
       firstCard,
@@ -1272,18 +1297,19 @@ function initFashionInteractions() {
         rotation: -7,
         scale: 0.82,
         opacity: 0,
-        duration: 0.7,
+        duration: 1.6,
         ease: "power2.in",
       },
-      2.7,
+      3.0,
     )
   }
 
   // Phase 3: Looks 02 to 06 enter from bottom corners -> pose center -> turn (flip) & exit to top corners
+  // Each exit animation receives generous scroll runway (1.4s 3D turn + 1.6s glide to backstage exit)
   for (let i = 1; i < totalLooks; i++) {
     const card = runwayCards[i]
     const isLeft = i % 2 === 0
-    const enterTime = 0.4 + i * 2.3
+    const enterTime = 0.4 + i * 3.6
 
     // Enter from alternating bottom corner into center ramp spotlight
     runwayTl.fromTo(
@@ -1303,22 +1329,22 @@ function initFashionInteractions() {
         rotateY: 0,
         scale: 1,
         opacity: 1,
-        duration: 0.85,
+        duration: 0.95,
         ease: "power2.out",
       },
       enterTime,
     )
 
-    // Pose in spotlight, then turn (flip 3D) and exit to top corner wing
+    // Pose in spotlight, then turn (flip 3D) and exit to top corner wing with increased scroll requirement
     runwayTl.to(
       card,
       {
         rotateY: isLeft ? -180 : 180,
-        x: isLeft ? -wingX * 0.45 : wingX * 0.45,
-        duration: 0.65,
+        x: isLeft ? -wingX * 0.4 : wingX * 0.4,
+        duration: 1.4,
         ease: "power2.inOut",
       },
-      enterTime + 1.65,
+      enterTime + 1.8,
     )
     runwayTl.to(
       card,
@@ -1328,10 +1354,10 @@ function initFashionInteractions() {
         rotation: isLeft ? -7 : 7,
         scale: 0.82,
         opacity: 0,
-        duration: 0.7,
+        duration: 1.6,
         ease: "power2.in",
       },
-      enterTime + 2.25,
+      enterTime + 2.6,
     )
   }
 
@@ -1353,10 +1379,10 @@ function initFashionInteractions() {
         y: 0,
         scale: 1,
         opacity: 1,
-        duration: 0.95,
+        duration: 1.1,
         ease: "power3.out",
       },
-      0.4 + totalLooks * 2.3,
+      0.4 + totalLooks * 3.6,
     )
   }
 

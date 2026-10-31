@@ -201,6 +201,7 @@ const t = useTranslations(lang)
       <button
         id="scroll-to-top-btn"
         type="button"
+        onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
         class="group inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors cursor-pointer"
       >
         <span>{t("back-to-cover")}</span>

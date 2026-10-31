@@ -38,7 +38,9 @@ const translatePath = useTranslatedPath(lang)
         <div class="hero-subtitle mt-5 flex items-start justify-end">
           {t("signature-by")}&nbsp;
           <a
-            href={translatePath("/eshale")}
+            href="https://instagram.com/its_eshale"
+            target="blank"
+            rel="noopener nofollow"
             class="signature-link group flex items-start gap-1 cursor-pointer"
             aria-label="About Eshale"
           >
@@ -64,10 +66,6 @@ const translatePath = useTranslatedPath(lang)
       <div class="hero-bottom-bar pointer-events-none absolute bottom-[calc(2.2rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full items-center justify-center px-6 sm:bottom-10 sm:px-12">
         <div class="pointer-events-auto">
           <Links />
-        </div>
-
-        <div class="pointer-events-none absolute right-6 sm:right-12 hidden font-mono text-xs uppercase tracking-widest text-neutral-400 sm:block">
-          {getIssueTag()}
         </div>
       </div>
     </section>
