@@ -1,4 +1,5 @@
 ---
+import Logo from "@/assets/logo.svg"
 import {
   getLangFromUrl,
   useTranslations,
@@ -12,20 +13,25 @@ const translatePath = useTranslatedPath(lang)
 
 <header
   id="editorial-header"
-  class="fixed top-0 left-0 right-0 z-40 border-b border-neutral-900/10 bg-[#faf9f6]/85 backdrop-blur-md transition-all duration-300"
+  class="editorial-header fixed top-0 left-0 right-0 z-40 -translate-y-full opacity-0 pointer-events-none transition-all duration-300 ease-out border-b border-neutral-900/10 bg-[#faf9f6]/85 backdrop-blur-md"
 >
   <div class="container mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
     <a
       href={translatePath("/")}
-      class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-600 hover:text-neutral-950 transition-colors"
+      class="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-800 hover:text-neutral-950 transition-colors"
+      aria-label={t("app-name")}
     >
-      <span class="transition-transform group-hover:-translate-x-1">←</span>
-      <span>{t("about-back-to-studio")}</span>
+      <span class="text-xs transition-transform group-hover:-translate-x-1">
+        ←
+      </span>
+      <Logo
+        class="size-6 text-purple-900 shrink-0 transition-transform group-hover:scale-105"
+        aria-hidden="true"
+      />
+      <span class="hidden sm:inline font-bold tracking-wider">
+        {t("about-back-to-studio")}
+      </span>
     </a>
-
-    <div class="hidden md:block font-mono text-xs uppercase tracking-widest text-neutral-400">
-      {t("about-eshale-folio")}
-    </div>
 
     <nav class="flex items-center gap-4 sm:gap-6 font-mono text-xs uppercase tracking-wider">
       <a

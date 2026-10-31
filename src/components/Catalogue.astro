@@ -36,93 +36,106 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
 
 <section
   id="catalogue"
-  class="catalogue-section relative z-10 w-full min-h-screen min-h-svh min-h-dvh lg:h-screen lg:max-h-screen flex flex-col justify-between bg-neutral-50/60 pt-20 sm:pt-24 pb-4 sm:pb-6 border-t border-neutral-900/10 overflow-hidden"
+  class="catalogue-section relative z-10 w-full min-h-screen min-h-svh min-h-dvh flex flex-col justify-between bg-[#fbfaf8] pt-16 sm:pt-20 pb-8 sm:pb-10 border-t border-neutral-900/15 overflow-hidden"
 >
-  <!-- Editorial Masthead Header -->
-  <div class="container mx-auto px-4 sm:px-8 mb-6 sm:mb-8 shrink-0">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 sm:pb-6 border-b border-neutral-900/15">
-      <div>
-        <div class="flex items-center gap-3 mb-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
-          <span class="inline-block size-2 rounded-full bg-purple-500 animate-pulse"></span>
-          <span>{t("catalogue-vol")}</span>
-          <span class="text-neutral-300">/</span>
-          <span>{t("catalogue-season")}</span>
-        </div>
-        <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl uppercase tracking-tight text-neutral-900">
-          {t("catalogue-title")}
-        </h2>
+  <!-- 1. Centered Section Introduction (Appears once in center, fades away as you scroll) -->
+  <div
+    id="catalogue-intro-center"
+    class="catalogue-intro-center absolute inset-0 z-30 flex flex-col items-center justify-center px-4 sm:px-8 text-center pointer-events-none will-change-transform bg-[#fbfaf8]"
+  >
+    <div class="max-w-2xl mx-auto space-y-4">
+      <div class="font-mono text-xs uppercase tracking-widest text-neutral-500 flex items-center justify-center gap-2">
+        <span>
+          [ [{" "}
+          <span class="inline-block size-1.5 rounded-full bg-purple-500 animate-pulse align-middle mr-1.5"></span>
+          {t("catalogue-vol")} · {t("catalogue-season")} ] ]
+        </span>
       </div>
 
-      <!-- Plate Counter (Header) -->
-      <div class="flex items-center gap-4">
-        <div class="font-mono text-xs text-neutral-600 tracking-wider">
-          {t("catalogue-plate")}{" "}
-          <span
-            id="active-plate-index"
-            class="font-bold text-neutral-950 font-mono text-sm sm:text-base"
-          >
-            01
-          </span>{" "}
-          / {totalPlatesDisplay}
-        </div>
-      </div>
-    </div>
+      <h2 class="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-tight text-neutral-950 leading-none">
+        {t("catalogue-title")}
+      </h2>
 
-    <!-- Editorial Subhead Strip -->
-    <div class="mt-3 flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-wider text-neutral-500">
-      <span>{t("catalogue-mediums-strip")}</span>
-      <span class="hidden sm:inline">{t("catalogue-nav-cue")}</span>
+      <p class="font-mono text-xs sm:text-sm uppercase tracking-wider text-neutral-500 max-w-lg mx-auto">
+        {t("catalogue-mediums-strip")}
+      </p>
+
+      <p class="font-serif italic text-sm sm:text-base text-neutral-700 max-w-md mx-auto leading-relaxed">
+        "A devotional practice of stillness—raw volcanic clay, mineral pigment,
+        and ethereal contemplation."
+      </p>
+
+      <div class="pt-4 font-mono text-xs uppercase tracking-widest text-neutral-400 flex items-center justify-center gap-2">
+        <span class="inline-block animate-bounce text-sm">↓</span>
+        <span>{t("catalogue-deck-cue")}</span>
+      </div>
     </div>
   </div>
 
-  <!-- Carousel Wrapper (Centered in Viewport) -->
-  <div class="catalogue-carousel-wrapper relative w-full flex-1 flex items-center min-h-0">
-    <!-- Lookbook Track Viewport -->
-    <div class="catalogue-viewport relative w-full overflow-hidden">
-      <div
-        id="catalogue-track"
-        class="catalogue-track flex flex-nowrap items-stretch gap-5 sm:gap-8 px-6 sm:px-12 lg:px-16 pb-2 will-change-transform"
+  <!-- 2. Catalogue HUD Header (Reveals after Intro Fades Out) -->
+  <div
+    id="catalogue-hud"
+    class="catalogue-hud container mx-auto px-4 sm:px-8 pt-2 pb-3 flex items-center justify-between border-b border-neutral-900/10 opacity-0 shrink-0 z-20 pointer-events-none transition-opacity duration-300"
+  >
+    <div class="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-neutral-600">
+      <span>
+        [{" "}
+        <span class="inline-block size-1.5 rounded-full bg-purple-500 animate-pulse align-middle mr-1.5"></span>
+        {t("catalogue-title")} ]
+      </span>
+      <span class="text-neutral-300">/</span>
+      <span class="text-neutral-500">{t("catalogue-curated-archive")}</span>
+    </div>
+
+    <div class="font-mono text-xs text-neutral-600 tracking-wider">
+      <span class="text-neutral-400">{t("catalogue-plate")}</span>{" "}
+      <span
+        id="active-plate-index"
+        class="font-bold text-neutral-950 font-mono text-sm sm:text-base"
       >
-        <!-- Introductory Editorial Card -->
-        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[56vh] max-h-[500px] min-h-[360px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-white/90 shadow-xs">
-          <div>
-            <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
-              {t("foreword-tag")}
-            </span>
-            <h3 class="font-serif text-xl sm:text-2xl lg:text-3xl italic text-neutral-900 mb-4 leading-tight">
-              {t("foreword-quote")}
-            </h3>
-            <p class="font-serif text-xs sm:text-sm text-neutral-600 leading-relaxed line-clamp-6">
-              {t("foreword-text")}
-            </p>
-          </div>
+        01
+      </span>{" "}
+      / {totalPlatesDisplay}
+    </div>
+  </div>
 
-          <div class="pt-6 border-t border-neutral-900/10 mt-6 flex items-center justify-between font-mono text-xs text-neutral-500">
-            <span>{t("foreword-dir")}</span>
-            <span>{t("foreword-est")}</span>
-          </div>
-        </div>
+  <!-- 3. SPLIT STAGE: Left Side Stacked Image Deck + Right Side Fluid Typography (Desktop) / Mobile Card-Overlay -->
+  <div
+    id="catalogue-split-stage"
+    class="container mx-auto px-4 sm:px-8 flex-1 flex flex-col lg:grid lg:grid-cols-12 lg:gap-14 items-center justify-center min-h-[460px] sm:min-h-[520px] md:min-h-[560px] my-auto overflow-visible opacity-0 pointer-events-none transition-opacity duration-300"
+  >
+    <!-- LEFT SIDE: Artwork Images with "Cards in a Deck" Animation -->
+    <div class="w-full lg:col-span-6 flex items-center justify-center relative h-full min-h-[400px] sm:min-h-[480px] md:min-h-[520px] max-h-[70vh]">
+      <!-- Deck Container for Images (Enlarged for High-Impact Art Presentation) -->
+      <div
+        id="catalogue-image-deck"
+        class="relative w-full max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[460px] xl:max-w-[500px] aspect-[3/4] sm:aspect-[4/5] mx-auto select-none"
+      >
+        <!-- Deck Shadow Layers for Physical Stacked Depth -->
+        <div
+          class="absolute -inset-3 bg-neutral-900/[0.04] border border-neutral-900/10 -z-20 translate-y-3 rotate-1 pointer-events-none"
+          aria-hidden="true"
+        ></div>
+        <div
+          class="absolute -inset-1.5 bg-neutral-900/[0.06] border border-neutral-900/10 -z-10 translate-y-1.5 -rotate-1 pointer-events-none"
+          aria-hidden="true"
+        ></div>
 
-        <!-- Artwork Cards -->
+        <!-- 6 Artwork Image Cards -->
         {artworks.map((artwork, idx) => (
-          <article
-            class="catalogue-card group shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[380px] xl:w-[420px] h-[56vh] max-h-[500px] min-h-[360px] flex flex-col justify-between border border-neutral-900/10 bg-white transition-all duration-300 hover:border-neutral-900/30 hover:shadow-lg overflow-hidden"
+          <div
+            class="catalogue-image-card group absolute inset-0 w-full h-full border border-neutral-900/20 bg-neutral-100 shadow-2xl overflow-hidden cursor-pointer will-change-transform"
             data-index={String(idx + 1).padStart(2, "0")}
-            data-id={artwork.id}
+            data-artwork-id={artwork.id}
           >
-            <!-- Card Header: Numbering & Year -->
-            <div class="flex items-center justify-between px-4 sm:px-5 py-2.5 border-b border-neutral-900/10 font-mono text-xs uppercase tracking-wider text-neutral-500 shrink-0">
-              <span class="font-serif text-sm sm:text-base font-bold italic text-neutral-900">
-                Nº {artwork.number}
-              </span>
+            <!-- Archival Meta Header (Always Visible) -->
+            <div class="px-3 sm:px-4 py-2 border-b border-neutral-900/15 flex items-center justify-between font-mono text-[9px] sm:text-[10px] uppercase tracking-wider text-neutral-500 bg-white/95 backdrop-blur-xs shrink-0">
+              <span>[ PLATE // Nº {artwork.number} ]</span>
               <span>{artwork.year}</span>
             </div>
 
-            <!-- Responsive Image Frame -->
-            <div
-              class="artwork-frame relative flex-1 min-h-[180px] sm:min-h-[220px] w-full overflow-hidden bg-neutral-100 cursor-pointer"
-              data-artwork-id={artwork.id}
-            >
+            <!-- Image Frame -->
+            <div class="relative w-full flex-1 h-[calc(100%-35px)] overflow-hidden bg-neutral-200">
               <Picture
                 src={artworkImageMap[artwork.id]}
                 formats={["avif", "webp"]}
@@ -130,104 +143,127 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
                 alt={artwork.alt}
                 loading="lazy"
                 decoding="async"
-                class="artwork-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
+                class="catalogue-artwork-img h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
               />
 
-              <!-- Chic Hover Overlay Pill -->
-              <div class="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-950/20 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
-                <span class="rounded-full bg-white/95 px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-wider text-neutral-900 shadow-md">
-                  {t("expand-plate")}
-                </span>
-              </div>
-            </div>
-
-            <!-- Card Body / Typography -->
-            <div class="flex flex-col justify-between p-4 sm:p-5 shrink-0 bg-white">
-              <div>
-                <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 block mb-0.5">
-                  {artwork.subtitle}
-                </span>
-                <h4 class="font-serif text-xl sm:text-2xl text-neutral-900 mb-1 line-clamp-1 group-hover:text-purple-900 transition-colors">
+              <!-- Mobile-only Title & Plate Info Overlay on Card (Eliminates mobile text overlap) -->
+              <div class="lg:hidden absolute bottom-0 inset-x-0 bg-gradient-to-t from-neutral-950/95 via-neutral-950/70 to-transparent p-4 pt-12 text-white z-10 flex flex-col justify-end pointer-events-none">
+                <div class="flex items-center justify-between font-mono text-[9px] uppercase tracking-widest text-white/70 mb-0.5">
+                  <span>[ PLATE // Nº {artwork.number} ]</span>
+                  <span>{artwork.year}</span>
+                </div>
+                <h3 class="font-serif text-xl sm:text-2xl text-white font-normal leading-tight">
                   {artwork.title}
-                </h4>
-                <p class="font-mono text-[11px] text-neutral-500 mb-2 line-clamp-1">
-                  {artwork.medium} · {artwork.dimensions}
+                </h3>
+                <p class="font-mono text-[10px] text-white/80 tracking-wider mt-1 line-clamp-1">
+                  {artwork.medium}
                 </p>
-                <p class="font-serif text-xs italic text-neutral-600 line-clamp-2 leading-relaxed">
-                  "{artwork.quote}"
-                </p>
+                <div class="mt-2 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider text-purple-300">
+                  <span>Tap for details &amp; statement</span>
+                  <span>↗</span>
+                </div>
               </div>
 
-              <div class="mt-3 pt-3 border-t border-neutral-900/10 flex items-center justify-between">
-                <button
-                  type="button"
-                  class="open-modal-btn inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-neutral-900 hover:text-purple-600 transition-colors cursor-pointer"
-                  data-artwork-id={artwork.id}
-                >
-                  <span>{t("details-and-statement")}</span>
-                  <span>→</span>
-                </button>
-
-                <span class="font-mono text-[10px] text-neutral-400 uppercase tracking-wider">
-                  {t("status-available")}
+              <!-- Desktop Hover Zoom Overlay -->
+              <div class="hidden lg:flex pointer-events-none absolute inset-0 items-center justify-center bg-neutral-950/20 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+                <span class="bg-white/95 px-3.5 py-1.5 border border-neutral-900/20 font-mono text-xs uppercase tracking-wider text-neutral-900 shadow-md">
+                  [ [ {t("expand-plate")} ] ]
                 </span>
               </div>
             </div>
-          </article>
+          </div>
         ))}
+      </div>
+    </div>
 
-        <!-- Closing Exhibition Card -->
-        <div class="catalogue-card shrink-0 w-[82vw] sm:w-[55vw] md:w-[42vw] lg:w-[360px] xl:w-[390px] h-[56vh] max-h-[500px] min-h-[360px] flex flex-col justify-between p-6 sm:p-8 border border-neutral-900/10 bg-neutral-950 text-white">
-          <div>
-            <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block mb-3">
-              {t("acquisitions-tag")}
-            </span>
-            <h3 class="font-serif text-2xl sm:text-3xl italic text-white mb-3 leading-tight">
-              {t("acquisitions-title")}
+    <!-- RIGHT SIDE: Text & Details Animate on Right Side (Desktop Only: NO CARD BOX) -->
+    <div class="hidden lg:flex lg:col-span-6 relative w-full h-full min-h-[340px] items-center">
+      <div id="catalogue-details-wrapper" class="relative w-full">
+        {artworks.map((artwork, idx) => (
+          <div
+            class="catalogue-detail-panel w-full space-y-4 will-change-transform transition-all"
+            data-detail-index={String(idx + 1).padStart(2, "0")}
+            style={idx === 0 ? "display: block;" : "display: none;"}
+          >
+            <!-- Plate Eyebrow & Series -->
+            <div class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-neutral-400">
+              <span class="text-purple-600 font-bold">
+                PLATE Nº {artwork.number}
+              </span>
+              <span>·</span>
+              <span>[ {artwork.subtitle} ]</span>
+              <span>·</span>
+              <span>{artwork.year}</span>
+            </div>
+
+            <!-- Monumental Artwork Title -->
+            <h3 class="font-serif text-3xl sm:text-5xl lg:text-6xl text-neutral-950 font-normal leading-[1.05]">
+              {artwork.title}
             </h3>
-            <p class="font-serif text-xs sm:text-sm text-neutral-300 leading-relaxed mb-6 line-clamp-6">
-              {t("acquisitions-text")}
-            </p>
-          </div>
 
-          <div class="space-y-3">
-            <button
-              type="button"
-              data-contact-action="whatsapp"
-              data-message="Hello, I would like to inquire about original works and commissions from RabbitHole Art Studio."
-              class="flex w-full items-center justify-center rounded-full bg-white px-4 py-2.5 font-mono text-xs uppercase tracking-wider text-neutral-950 transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
-            >
-              {t("inquire-whatsapp")}
-            </button>
-            <button
-              type="button"
-              data-contact-action="email"
-              data-subject="Inquiry: RabbitHole Art Studio Original Works"
-              class="flex w-full items-center justify-center rounded-full border border-white/30 px-4 py-2.5 font-mono text-xs uppercase tracking-wider text-white transition-colors hover:bg-white/10 cursor-pointer"
-            >
-              {t("email-studio")}
-            </button>
+            <!-- Specifications Strip -->
+            <div class="border-y border-neutral-900/15 py-3 font-mono text-xs text-neutral-600 flex flex-wrap gap-x-6 gap-y-1">
+              <span>
+                <strong>MEDIUM:</strong> {artwork.medium}
+              </span>
+              <span>
+                <strong>DIMENSIONS:</strong> {artwork.dimensions}
+              </span>
+            </div>
+
+            <!-- Philosophical Pull Quote -->
+            <blockquote class="font-serif italic text-lg sm:text-xl text-neutral-800 leading-relaxed border-l-2 border-neutral-900 pl-4 py-1">
+              "{artwork.quote}"
+            </blockquote>
+
+            <!-- Curatorial Statement -->
+            <p class="font-serif text-sm sm:text-base text-neutral-600 leading-relaxed max-w-xl">
+              {artwork.description}
+            </p>
+
+            <!-- Actions Row -->
+            <div class="pt-4 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                class="open-modal-btn inline-flex items-center gap-2 rounded-full bg-neutral-950 px-6 py-3 font-mono text-xs uppercase tracking-wider text-white shadow-sm transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+                data-artwork-id={artwork.id}
+              >
+                <span>{t("details-and-statement")}</span>
+                <span>↗</span>
+              </button>
+
+              <button
+                type="button"
+                data-contact-action="whatsapp"
+                data-message={`Hello, I would like to inquire about "${artwork.title}" (Plate Nº ${artwork.number}) from the RabbitHole catalogue.`}
+                class="inline-flex items-center gap-2 rounded-full border border-neutral-900/25 bg-white px-6 py-3 font-mono text-xs uppercase tracking-wider text-neutral-950 hover:bg-neutral-100 transition-colors cursor-pointer"
+              >
+                <span>{t("catalogue-inquire-availability")}</span>
+                <span>✦</span>
+              </button>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   </div>
 
-  <!-- Bottom Visual Scroll Indicator Bar -->
-  <div class="container mx-auto px-4 sm:px-8 mt-4 sm:mt-6 flex items-center justify-between shrink-0">
-    <div class="h-0.5 flex-1 max-w-xs bg-neutral-200 rounded-full overflow-hidden">
+  <!-- 3. Navigation Progress Bar (Dots removed per design) -->
+  <div class="container mx-auto px-4 sm:px-8 mt-4 sm:mt-6 flex items-center justify-center shrink-0">
+    <div
+      class="h-1 w-48 sm:w-64 bg-neutral-200/80 rounded-full overflow-hidden"
+      role="progressbar"
+      aria-label="Plates progress"
+    >
       <div
         id="catalogue-progress-bar"
         class="h-full w-1/6 bg-neutral-950 transition-all duration-150"
       ></div>
     </div>
-    <span class="font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-neutral-400">
-      {t("archive-label")}
-    </span>
   </div>
 </section>
 
-<!-- High-Fashion Editorial Lightbox Modal -->
+<!-- Lightbox Modal for Artworks -->
 <div
   id="artwork-modal"
   class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 opacity-0 pointer-events-none transition-opacity duration-300"
@@ -235,18 +271,15 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
   aria-modal="true"
   aria-hidden="true"
 >
-  <!-- Backdrop -->
   <div
     id="modal-backdrop"
     class="absolute inset-0 bg-neutral-950/70 backdrop-blur-md"
   ></div>
 
-  <!-- Modal Content Container -->
   <div
     id="modal-card"
     class="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-none bg-white p-6 sm:p-8 md:p-10 shadow-2xl border border-neutral-900/10 no-scrollbar"
   >
-    <!-- Close Button -->
     <button
       id="modal-close-btn"
       aria-label={t("modal-close")}
@@ -256,12 +289,10 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
     </button>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start">
-      <!-- Modal Image -->
       <div class="aspect-[3/4] w-full overflow-hidden bg-neutral-100 border border-neutral-900/10 shadow-inner">
         <img id="modal-img" src="" alt="" class="h-full w-full object-cover" />
       </div>
 
-      <!-- Modal Metadata & Lorem Ipsum Critique -->
       <div class="flex flex-col justify-between h-full space-y-6">
         <div>
           <div class="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-neutral-400 mb-2">
@@ -308,10 +339,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
           </blockquote>
 
           <div class="space-y-3 font-serif text-sm text-neutral-600 leading-relaxed">
-            <p id="modal-desc">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            <p id="modal-desc">Curatorial description placeholder.</p>
             <p class="text-xs text-neutral-400 font-mono">
               {t("modal-authenticity-note")}
             </p>
@@ -323,7 +351,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
             type="button"
             id="modal-inquire-whatsapp"
             data-contact-action="whatsapp"
-            class="flex-1 flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 font-mono text-xs uppercase tracking-wider text-white transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer"
+            class="flex-1 flex items-center justify-center rounded-full bg-neutral-950 px-6 py-3 font-mono text-xs uppercase tracking-wider text-white transition-transform hover:scale-[1.02] active:scale-95 cursor-pointer font-bold"
           >
             {t("modal-inquire-whatsapp")}
           </button>
@@ -341,7 +369,7 @@ const totalPlatesDisplay = String(totalArtworks).padStart(2, "0")
   </div>
 </div>
 
-<!-- Embedded Artworks Data for Client-Side Modal & Interactions (Synchronized with artworks.md) -->
+<!-- Embedded Artworks Data -->
 <script
   id="artworks-data"
   type="application/json"

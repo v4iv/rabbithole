@@ -58,3 +58,24 @@
   opacity: 1;
   pointer-events: auto;
 }
+
+/* Ambient Ethereal Sway for Hero Portrait */
+@keyframes ethereal-sway {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(7px) rotate(0.4deg);
+  }
+}
+
+.animate-ethereal-sway {
+  animation: ethereal-sway 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ethereal-sway {
+    animation: none;
+  }
+}

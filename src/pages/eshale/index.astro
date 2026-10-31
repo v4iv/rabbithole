@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro"
 import EditorialHeader from "@/components/EditorialHeader.astro"
 import Bio from "@/components/Bio.astro"
+import EditorialTicker from "@/components/EditorialTicker.astro"
 import Catalogue from "@/components/Catalogue.astro"
 import Couture from "@/components/Couture.astro"
 import Colophon from "@/components/Colophon.astro"
@@ -26,8 +27,14 @@ const t = useTranslations(lang)
     <!-- Bio & Ethereal Artist Profile Section -->
     <Bio />
 
+    <!-- Continuous Editorial Running Ticker -->
+    <EditorialTicker />
+
     <!-- Volume I: Artworks & Ceramics Catalogue Section -->
     <Catalogue />
+
+    <!-- Continuous Editorial Running Ticker -->
+    <EditorialTicker />
 
     <!-- Volume II: Couture & Wearable Art Section -->
     <Couture />

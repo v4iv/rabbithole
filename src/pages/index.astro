@@ -8,6 +8,7 @@ import {
   useTranslations,
   useTranslatedPath,
 } from "@/i18n/utils"
+import { getIssueTag } from "@/utils/issue"
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
@@ -60,22 +61,22 @@ const translatePath = useTranslatedPath(lang)
       </div>
 
       <!-- Hero Bottom Bar: Social Links Dock -->
-      <div class="hero-bottom-bar pointer-events-none absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full items-center justify-center px-6 sm:bottom-8 sm:px-12">
+      <div class="hero-bottom-bar pointer-events-none absolute bottom-[calc(2.2rem+env(safe-area-inset-bottom,0px))] z-30 flex w-full items-center justify-center px-6 sm:bottom-10 sm:px-12">
         <div class="pointer-events-auto">
           <Links />
         </div>
 
         <div class="pointer-events-none absolute right-6 sm:right-12 hidden font-mono text-xs uppercase tracking-widest text-neutral-400 sm:block">
-          {t("issue-tag")}
+          {getIssueTag()}
         </div>
       </div>
     </section>
 
     <!-- credits -->
-    <footer class="page-footer pointer-events-none absolute right-5 bottom-[calc(0.35rem+env(safe-area-inset-bottom,0px))] z-20 hidden sm:flex w-full justify-end">
+    <footer class="page-footer pointer-events-none absolute right-4 sm:right-6 bottom-[calc(0.5rem+env(safe-area-inset-bottom,0px))] z-20 flex w-full justify-end px-2">
       <a
         href="https://waybove.pages.dev"
-        class="pointer-events-auto font-mono text-xs lowercase"
+        class="pointer-events-auto font-mono text-xs lowercase text-neutral-600 hover:text-neutral-950 transition-colors"
         target="_blank"
         rel="noopener nofollow"
       >

@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "@/i18n/utils"
+import { getIssueFormatted } from "@/utils/issue"
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
@@ -14,7 +15,7 @@ const t = useTranslations(lang)
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-14 border-b border-white/10">
       <div class="lg:col-span-6 space-y-4">
         <span class="font-mono text-xs uppercase tracking-widest text-neutral-400 block">
-          {t("colophon-tag")}
+          {t("colophon-directory-tag")} {getIssueFormatted()}
         </span>
         <h3 class="font-serif text-3xl sm:text-5xl uppercase tracking-tight text-white">
           {t("app-name")}

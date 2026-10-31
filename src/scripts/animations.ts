@@ -99,44 +99,40 @@ export function setupAnimations() {
     return
   }
 
+  // Smooth anchor navigation
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href")
+      if (!href || href === "#") return
+      const targetEl = document.querySelector(href)
+      if (targetEl) {
+        e.preventDefault()
+        targetEl.scrollIntoView({ behavior: "smooth" })
+      }
+    })
+  })
+
   /* -------------------------------------------------------------
-   * 1. HERO INITIAL STATE
+   * 1. HERO INITIAL STATE (Landing Page)
    * ------------------------------------------------------------- */
-  gsap.set(heroRabbithole, {
-    opacity: 0,
-    y: 35,
-    scale: 0.96,
-  })
-
-  gsap.set(heroArt, {
-    opacity: 0,
-    scale: 0.8,
-    rotation: -7,
-    y: 22,
-  })
-
-  gsap.set(heroStudio, {
-    opacity: 0,
-    x: 25,
-    y: 8,
-  })
-
-  gsap.set(heroSubtitle, {
-    opacity: 0,
-    y: 16,
-  })
-
-  gsap.set(heroBottomBar, {
-    opacity: 0,
-    y: 20,
-  })
-
-  gsap.set(socialButtons, {
-    opacity: 0,
-    y: 18,
-    scale: 0.8,
-  })
-
+  if (heroRabbithole) {
+    gsap.set(heroRabbithole, { opacity: 0, y: 35, scale: 0.96 })
+  }
+  if (heroArt) {
+    gsap.set(heroArt, { opacity: 0, scale: 0.8, rotation: -7, y: 22 })
+  }
+  if (heroStudio) {
+    gsap.set(heroStudio, { opacity: 0, x: 25, y: 8 })
+  }
+  if (heroSubtitle) {
+    gsap.set(heroSubtitle, { opacity: 0, y: 16 })
+  }
+  if (heroBottomBar) {
+    gsap.set(heroBottomBar, { opacity: 0, y: 20 })
+  }
+  if (socialButtons.length > 0) {
+    gsap.set(socialButtons, { opacity: 0, y: 18, scale: 0.8 })
+  }
   if (cursorGlow) {
     gsap.set(cursorGlow, { opacity: 0 })
   }
@@ -144,110 +140,91 @@ export function setupAnimations() {
   /* -------------------------------------------------------------
    * 2. MAIN HERO ENTRANCE TIMELINE
    * ------------------------------------------------------------- */
-  const masterTl = gsap.timeline({
-    delay: 0.1,
-    onComplete: () => {
-      startAmbientAnimations()
-    },
-  })
-
-  // Ambient glow
-  if (cursorGlow) {
-    masterTl.to(
-      cursorGlow,
-      {
-        opacity: 1,
-        duration: 1.6,
-        ease: "power2.out",
+  if (heroRabbithole) {
+    const masterTl = gsap.timeline({
+      delay: 0.1,
+      onComplete: () => {
+        startAmbientAnimations()
       },
-      0,
+    })
+
+    if (cursorGlow) {
+      masterTl.to(
+        cursorGlow,
+        { opacity: 1, duration: 1.6, ease: "power2.out" },
+        0,
+      )
+    }
+
+    masterTl.to(
+      heroRabbithole,
+      { opacity: 1, y: 0, scale: 1, duration: 1.25, ease: "power3.out" },
+      0.1,
     )
+
+    if (heroArt) {
+      masterTl.to(
+        heroArt,
+        {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          y: 0,
+          duration: 1.35,
+          ease: "back.out(1.6)",
+        },
+        0.35,
+      )
+    }
+
+    if (heroStudio) {
+      masterTl.to(
+        heroStudio,
+        { opacity: 1, x: 0, y: 0, duration: 1.1, ease: "power3.out" },
+        0.55,
+      )
+    }
+
+    if (heroSubtitle) {
+      masterTl.to(
+        heroSubtitle,
+        { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
+        0.75,
+      )
+    }
+
+    if (heroBottomBar) {
+      masterTl.to(
+        heroBottomBar,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power2.out",
+          clearProps: "y,opacity",
+        },
+        0.85,
+      )
+    }
+
+    if (socialButtons.length > 0) {
+      masterTl.to(
+        socialButtons,
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: "back.out(1.8)",
+          clearProps: "y,opacity",
+        },
+        0.95,
+      )
+    }
   }
 
-  // 1. "rabbithole" - foundational anchor
-  masterTl.to(
-    heroRabbithole,
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 1.25,
-      ease: "power3.out",
-    },
-    0.1,
-  )
-
-  // 2. "art" - handwritten flourish blossoms
-  masterTl.to(
-    heroArt,
-    {
-      opacity: 1,
-      scale: 1,
-      rotation: 0,
-      y: 0,
-      duration: 1.35,
-      ease: "back.out(1.6)",
-    },
-    0.35,
-  )
-
-  // 3. "STUDIO" - refined serif type settles
-  masterTl.to(
-    heroStudio,
-    {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      duration: 1.1,
-      ease: "power3.out",
-    },
-    0.55,
-  )
-
-  // 4. Subtitle ("by eshale")
-  masterTl.to(
-    heroSubtitle,
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      ease: "power2.out",
-    },
-    0.75,
-  )
-
-  // 5. Hero Bottom Bar (Scroll Cue & Social dock)
-  masterTl.to(
-    heroBottomBar,
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      ease: "power2.out",
-      clearProps: "y,opacity",
-    },
-    0.85,
-  )
-
-  masterTl.to(
-    socialButtons,
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.7,
-      stagger: 0.08,
-      ease: "back.out(1.8)",
-      clearProps: "y,opacity",
-    },
-    0.95,
-  )
-
-  /* -------------------------------------------------------------
-   * 3. AMBIENT HERO ANIMATIONS
-   * ------------------------------------------------------------- */
   function startAmbientAnimations() {
-    // Gentle floating on "art" flourish
     const artPath = document.querySelector(".hero-group-art path")
     if (artPath) {
       gsap.to(artPath, {
@@ -259,8 +236,6 @@ export function setupAnimations() {
         repeat: -1,
       })
     }
-
-    // Subtle bobbing on scroll cue arrow
     if (cueArrow) {
       gsap.to(cueArrow, {
         y: 4,
@@ -273,7 +248,7 @@ export function setupAnimations() {
   }
 
   /* -------------------------------------------------------------
-   * 4. INTERACTIVE MULTI-PLANE PARALLAX (Desktop)
+   * 3. INTERACTIVE MULTI-PLANE PARALLAX (Desktop)
    * ------------------------------------------------------------- */
   if (isFinePointer && heroContainer) {
     const quickRabbitholeX = heroRabbithole
@@ -282,14 +257,12 @@ export function setupAnimations() {
     const quickRabbitholeY = heroRabbithole
       ? gsap.quickTo(heroRabbithole, "y", { duration: 0.8, ease: "power2.out" })
       : null
-
     const quickArtX = heroArt
       ? gsap.quickTo(heroArt, "x", { duration: 0.9, ease: "power2.out" })
       : null
     const quickArtY = heroArt
       ? gsap.quickTo(heroArt, "y", { duration: 0.9, ease: "power2.out" })
       : null
-
     const quickStudioX = heroStudio
       ? gsap.quickTo(heroStudio, "x", { duration: 0.75, ease: "power2.out" })
       : null
@@ -343,18 +316,13 @@ export function setupAnimations() {
   }
 
   /* -------------------------------------------------------------
-   * 5. SOCIAL BUTTON HOVER MICRO-INTERACTIONS
+   * 4. SOCIAL BUTTON HOVER MICRO-INTERACTIONS
    * ------------------------------------------------------------- */
   socialButtons.forEach((btn) => {
     const el = btn as HTMLElement
     const icon = el.querySelector("svg")
-
     el.addEventListener("mouseenter", () => {
-      gsap.to(el, {
-        scale: 1.15,
-        duration: 0.25,
-        ease: "power2.out",
-      })
+      gsap.to(el, { scale: 1.15, duration: 0.25, ease: "power2.out" })
       if (icon) {
         gsap.to(icon, {
           rotate: 6,
@@ -364,13 +332,8 @@ export function setupAnimations() {
         })
       }
     })
-
     el.addEventListener("mouseleave", () => {
-      gsap.to(el, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      })
+      gsap.to(el, { scale: 1, duration: 0.3, ease: "power2.out" })
       if (icon) {
         gsap.to(icon, {
           rotate: 0,
@@ -382,9 +345,6 @@ export function setupAnimations() {
     })
   })
 
-  /* -------------------------------------------------------------
-   * 6. SIGNATURE LINK HOVER
-   * ------------------------------------------------------------- */
   if (signatureLink && signatureArrow) {
     signatureLink.addEventListener("mouseenter", () => {
       gsap.to(signatureArrow, {
@@ -394,7 +354,6 @@ export function setupAnimations() {
         ease: "back.out(2)",
       })
     })
-
     signatureLink.addEventListener("mouseleave", () => {
       gsap.to(signatureArrow, {
         x: 0,
@@ -406,264 +365,619 @@ export function setupAnimations() {
   }
 
   /* -------------------------------------------------------------
-   * 7. CATALOGUE & GALLERY SETUP (Mobile & Desktop)
-   * ------------------------------------------------------------- */
-  initCatalogueInteractions()
-
-  /* -------------------------------------------------------------
-   * 8. FASHION & COUTURE MODAL INTERACTIONS
-   * ------------------------------------------------------------- */
-  initFashionInteractions()
-
-  /* -------------------------------------------------------------
-   * 9. EDITORIAL PAGE ANIMATIONS (/eshale)
+   * 5. EDITORIAL PORTFOLIO (/eshale)
    * ------------------------------------------------------------- */
   initEditorialPageAnimations()
-
-  /* -------------------------------------------------------------
-   * 10. PROTECTED CONTACT & CLICK-TO-VIEW HANDLERS
-   * ------------------------------------------------------------- */
+  initCatalogueInteractions()
+  initFashionInteractions()
   initProtectedContactHandlers()
+
+  // Refresh all ScrollTrigger instances after layout registration
+  ScrollTrigger.refresh()
 }
 
 /**
- * Initializes Catalogue Lookbook interactions:
- * - Desktop & Mobile: GSAP Pinned horizontal scrolljack with ScrollTrigger
- * - Begins when the artwork cards are vertically centered in the viewport
- * - Horizontal touch swipe support on touch screens
- * - Live plate counter (PLATE 01 / 06) and progress bar synchronization
- * - Quick-view lightbox modal
+ * Editorial Magazine Cover & Settling Bio Animation (/eshale)
+ * - Large artist image in background with matching lavender-periwinkle tone (#8e88bc)
+ * - "ESHALE" as the magazine cover title in front, blurbs on left and right over the image
+ * - On scroll scrub:
+ *   - The background image shrinks into the background
+ *   - "ESHALE" comes to the front, glides up, and gets stickied below the navbar
+ *   - Left and right blurbs move outward to the sides and fade away
+ *   - Then "ESHALE" docks and settles as the headline to the dossier section
  */
-function initCatalogueInteractions() {
-  const catalogueSection = document.getElementById("catalogue")
-  const track = document.getElementById("catalogue-track")
-  const indexEl = document.getElementById("active-plate-index")
-  const progressEl = document.getElementById("catalogue-progress-bar")
+function initEditorialPageAnimations() {
+  const bioSection = document.getElementById("bio")
+  if (!bioSection) return
 
-  if (!catalogueSection || !track) return
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches
 
-  // Prevent mobile Safari/Chrome address bar resize jumps
-  ScrollTrigger.config({ ignoreMobileResize: true })
+  // 1. Directionally-aware Editorial Navbar (Hidden in Hero, Appears past hero so user knows it exists, then directionally reactive)
+  const header = document.getElementById("editorial-header")
+  if (header) {
+    let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0
 
-  const getCards = (): HTMLElement[] =>
-    Array.from(track.querySelectorAll<HTMLElement>(".catalogue-card"))
+    const updateHeader = () => {
+      const currentScrollY = window.scrollY
+      const coverStage = document.getElementById("bio-cover-stage")
+      // Hero stage threshold: pinned coverStage (end is +=1200)
+      const heroThreshold = coverStage ? coverStage.offsetTop + 1100 : 800
 
-  const artworks = getArtworks()
-  const totalArtworks = artworks.length || 6
+      if (currentScrollY < heroThreshold) {
+        // In Hero Stage: Fully hidden so ESHALE is unobstructed at top
+        header.classList.add(
+          "-translate-y-full",
+          "opacity-0",
+          "pointer-events-none",
+        )
+        header.classList.remove(
+          "translate-y-0",
+          "opacity-100",
+          "pointer-events-auto",
+          "shadow-xs",
+        )
+      } else if (
+        currentScrollY >= heroThreshold &&
+        currentScrollY < heroThreshold + 350
+      ) {
+        // Right as you scroll past hero: Always appear so user knows it exists!
+        header.classList.remove(
+          "-translate-y-full",
+          "opacity-0",
+          "pointer-events-none",
+        )
+        header.classList.add(
+          "translate-y-0",
+          "opacity-100",
+          "pointer-events-auto",
+          "shadow-xs",
+        )
+      } else {
+        // Past the initial buffer: Directionally aware
+        const isScrollingUp = currentScrollY < lastScrollY
+        if (isScrollingUp) {
+          // Scrolling UP: reveal translucent blurred navbar
+          header.classList.remove(
+            "-translate-y-full",
+            "opacity-0",
+            "pointer-events-none",
+          )
+          header.classList.add(
+            "translate-y-0",
+            "opacity-100",
+            "pointer-events-auto",
+            "shadow-xs",
+          )
+        } else if (currentScrollY > lastScrollY + 6) {
+          // Scrolling DOWN: slide navbar up out of view
+          header.classList.add(
+            "-translate-y-full",
+            "opacity-0",
+            "pointer-events-none",
+          )
+          header.classList.remove(
+            "translate-y-0",
+            "opacity-100",
+            "pointer-events-auto",
+          )
+        }
+      }
+      lastScrollY = Math.max(0, currentScrollY)
+    }
 
-  const getScrollDistance = () => {
-    return Math.max(
-      0,
-      track.scrollWidth -
-        track.clientWidth +
-        (window.innerWidth < 640 ? 32 : 80),
+    window.addEventListener("scroll", updateHeader, { passive: true })
+    updateHeader()
+  }
+
+  if (prefersReducedMotion) return
+
+  const coverStage = document.getElementById("bio-cover-stage")
+  const bgImage = bioSection.querySelector(".bio-cover-bg-image")
+  const coverTitle = document.getElementById("bio-cover-title")
+  const topBar = bioSection.querySelector(".bio-cover-topbar")
+  const coverCoords = bioSection.querySelector(".bio-cover-coords")
+  const blurbLeft = document.getElementById("bio-blurb-left")
+  const blurbRight = document.getElementById("bio-blurb-right")
+  const scrollCue = document.getElementById("bio-scroll-cue")
+  const settledSection = document.getElementById("bio-settled-section")
+  const settledHeadline = bioSection.querySelector(".bio-settled-headline")
+  const bioDisciplines = bioSection.querySelector(".bio-disciplines-grid")
+
+  // 1. Initial Hero Entrance Sequence when page first opens (only at top of page)
+  if (typeof window !== "undefined" && window.scrollY < 20) {
+    const heroEntranceTl = gsap.timeline({ delay: 0.1 })
+
+    if (bgImage) {
+      heroEntranceTl.from(bgImage, {
+        opacity: 0,
+        scale: 1.05,
+        duration: 1.3,
+        ease: "power2.out",
+      })
+    }
+
+    if (coverTitle) {
+      heroEntranceTl.from(
+        coverTitle,
+        { opacity: 0, y: 25, duration: 1.1, ease: "power3.out" },
+        0.15,
+      )
+    }
+
+    if (coverCoords) {
+      heroEntranceTl.from(
+        coverCoords,
+        { opacity: 0, y: -8, duration: 0.8, ease: "power2.out" },
+        0.35,
+      )
+    }
+
+    if (topBar) {
+      heroEntranceTl.from(
+        topBar,
+        { opacity: 0, y: 8, duration: 0.8, ease: "power2.out" },
+        0.45,
+      )
+    }
+
+    if (blurbLeft) {
+      heroEntranceTl.from(
+        blurbLeft,
+        { opacity: 0, x: -25, duration: 0.9, ease: "power3.out" },
+        0.55,
+      )
+    }
+
+    if (blurbRight) {
+      heroEntranceTl.from(
+        blurbRight,
+        { opacity: 0, x: 25, duration: 0.9, ease: "power3.out" },
+        0.65,
+      )
+    }
+
+    if (scrollCue) {
+      heroEntranceTl.from(
+        scrollCue,
+        { opacity: 0, y: 10, duration: 0.8, ease: "power2.out" },
+        0.8,
+      )
+    }
+  }
+
+  if (coverStage && coverTitle && settledSection) {
+    ScrollTrigger.config({ ignoreMobileResize: true })
+
+    const coverTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: coverStage,
+        start: "top top",
+        end: "+=1200",
+        pin: true,
+        scrub: 0.8,
+        anticipatePin: 1,
+      },
+    })
+
+    // 1. Blurbs move outward to sides and fade away (fromTo guarantees restoration on scroll up!)
+    if (blurbLeft) {
+      coverTl.fromTo(
+        blurbLeft,
+        { x: 0, opacity: 1 },
+        { x: -90, opacity: 0, duration: 0.5, ease: "power1.in" },
+        0,
+      )
+    }
+    if (blurbRight) {
+      coverTl.fromTo(
+        blurbRight,
+        { x: 0, opacity: 1 },
+        { x: 90, opacity: 0, duration: 0.5, ease: "power1.in" },
+        0,
+      )
+    }
+    if (topBar) {
+      coverTl.fromTo(
+        topBar,
+        { y: 0, opacity: 1 },
+        { opacity: 0, y: -20, duration: 0.35, ease: "power1.in" },
+        0,
+      )
+    }
+    if (coverCoords) {
+      coverTl.fromTo(
+        coverCoords,
+        { y: 0, opacity: 1 },
+        { opacity: 0, y: -20, duration: 0.35, ease: "power1.in" },
+        0,
+      )
+    }
+    if (scrollCue) {
+      coverTl.fromTo(
+        scrollCue,
+        { y: 0, opacity: 1 },
+        { opacity: 0, y: -20, duration: 0.3, ease: "power1.in" },
+        0,
+      )
+    }
+
+    // 2. Image shrinks and fades away to nothingness (fromTo guarantees restoration on scroll up!)
+    if (bgImage) {
+      coverTl.fromTo(
+        bgImage,
+        { scale: 1, opacity: 1, y: 0 },
+        {
+          scale: 0.82,
+          opacity: 0,
+          y: -40,
+          duration: 0.8,
+          ease: "power2.inOut",
+        },
+        0.1,
+      )
+    }
+
+    // 3. ESHALE title scales down and transitions towards dossier section
+    coverTl.fromTo(
+      coverTitle,
+      { scale: 1, y: 0, opacity: 1 },
+      {
+        scale: 0.65,
+        y: -60,
+        opacity: 0,
+        duration: 0.75,
+        ease: "power2.inOut",
+      },
+      0.15,
     )
   }
 
-  let currentCardIndex = 0
-
-  function updateActiveCard(progress: number) {
-    const cards = getCards()
-    if (cards.length === 0) return
-
-    const totalDist = getScrollDistance()
-    const currentTranslateX = progress * totalDist
-    const viewportCenter = window.innerWidth / 2
-
-    let activeIdx = 0
-    let minDiff = Infinity
-
-    cards.forEach((card, idx) => {
-      const cardRect = card.getBoundingClientRect()
-      const cardCenter = cardRect.left + cardRect.width / 2
-      const diff = Math.abs(cardCenter - viewportCenter)
-      if (diff < minDiff) {
-        minDiff = diff
-        activeIdx = idx
-      }
-    })
-
-    currentCardIndex = activeIdx
-
-    // Update plate indicator: Card 0 is foreword (shows 01), Cards 1..6 are artworks, Card 7 is acquisitions
-    if (indexEl) {
-      let plateNum = activeIdx
-      if (activeIdx === 0) plateNum = 1
-      else if (activeIdx > totalArtworks) plateNum = totalArtworks
-      indexEl.textContent = String(plateNum).padStart(2, "0")
-    }
-
-    // Update progress bar
-    if (progressEl) {
-      progressEl.style.width = `${Math.max(12, progress * 100)}%`
-    }
-  }
-
-  // Master ScrollTrigger for Horizontal Lookbook Pinning
-  const scrollTween = gsap.to(track, {
-    x: () => -getScrollDistance(),
-    ease: "none",
-    scrollTrigger: {
-      trigger: catalogueSection,
-      pin: true,
-      anticipatePin: 1,
-      scrub: 0.8,
-      // Begins clickjacking immediately at the section start
-      start: "top top",
-      end: () => `+=${getScrollDistance()}`,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        updateActiveCard(self.progress)
+  // Settled Dossier Headline entrance animation
+  if (settledHeadline) {
+    gsap.fromTo(
+      settledHeadline,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: settledHeadline,
+          start: "top 85%",
+          once: true,
+        },
       },
-    },
-  })
-
-  const st = scrollTween.scrollTrigger
-
-  // Navigate to a specific card smoothly
-  function goToCard(targetIndex: number) {
-    const cards = getCards()
-    const clampedIndex = Math.max(0, Math.min(cards.length - 1, targetIndex))
-    const targetCard = cards[clampedIndex]
-    if (!targetCard || !st) return
-
-    const totalDist = getScrollDistance()
-    if (totalDist <= 0) return
-
-    const cardOffset =
-      targetCard.offsetLeft - (window.innerWidth < 640 ? 24 : 64)
-    const progressRatio = Math.max(0, Math.min(1, cardOffset / totalDist))
-    const targetScrollY = st.start + progressRatio * (st.end - st.start)
-
-    window.scrollTo({
-      top: targetScrollY,
-      behavior: "smooth",
-    })
+    )
   }
 
-  // Smooth scroll to catalogue section start when links with href="#catalogue" are clicked
-  document.querySelectorAll('a[href="#catalogue"]').forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault()
-      if (st) {
-        window.scrollTo({
-          top: st.start + 1,
-          behavior: "smooth",
-        })
-      } else {
-        catalogueSection.scrollIntoView({ behavior: "smooth" })
-      }
-    })
-  })
-
-  // Smooth scroll past catalogue to fashion when links with href="#fashion" are clicked
-  document.querySelectorAll('a[href="#fashion"]').forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const fashionSection = document.getElementById("fashion")
-      if (fashionSection) {
-        e.preventDefault()
-        const targetTop = st ? st.end + 2 : fashionSection.offsetTop
-        window.scrollTo({
-          top: targetTop,
-          behavior: "smooth",
-        })
-      }
-    })
-  })
-
-  // Smooth scroll to catalogue when Hero cue is clicked
-  const cueLink = document.querySelector(".catalogue-scroll-cue")
-  if (cueLink && st) {
-    cueLink.addEventListener("click", (e) => {
-      e.preventDefault()
-      window.scrollTo({
-        top: st.start + 1,
-        behavior: "smooth",
-      })
-    })
-  }
-
-  // Horizontal touch swipe handling on mobile devices
-  let touchStartX = 0
-  let touchStartY = 0
-  let isTouching = false
-
-  track.addEventListener(
-    "touchstart",
-    (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        touchStartX = e.touches[0].clientX
-        touchStartY = e.touches[0].clientY
-        isTouching = true
-      }
-    },
-    { passive: true },
-  )
-
-  track.addEventListener(
-    "touchend",
-    (e: TouchEvent) => {
-      if (!isTouching || e.changedTouches.length === 0) return
-      isTouching = false
-      const deltaX = e.changedTouches[0].clientX - touchStartX
-      const deltaY = e.changedTouches[0].clientY - touchStartY
-
-      // Swipe detected if horizontal motion is significant and greater than vertical
-      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.1) {
-        if (deltaX < 0) {
-          goToCard(currentCardIndex + 1)
-        } else {
-          goToCard(currentCardIndex - 1)
-        }
-      }
-    },
-    { passive: true },
-  )
-
-  // Card image subtle scale animation on scroll
-  const cards = getCards()
-  cards.forEach((card) => {
-    const img = card.querySelector(".artwork-img")
-    if (img) {
+  // Stagger reveal on the 3 practice discipline dossiers
+  if (bioDisciplines) {
+    const disciplineCards = bioDisciplines.querySelectorAll(":scope > div")
+    if (disciplineCards.length > 0) {
       gsap.fromTo(
-        img,
-        { scale: 1.08 },
+        disciplineCards,
+        { opacity: 0, y: 24 },
         {
-          scale: 1,
-          duration: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.75,
+          stagger: 0.12,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: card,
-            containerAnimation: scrollTween,
-            start: "left right",
-            end: "center center",
-            scrub: true,
+            trigger: bioDisciplines,
+            start: "top 88%",
+            once: true,
           },
         },
       )
     }
-  })
+  }
+}
 
-  // Initial call to set active states
-  if (st) {
-    updateActiveCard(st.progress || 0)
+/**
+ * Initializes Catalogue Section:
+ * - Left side: Artwork images have the "cards in a deck" animation
+ * - Right side: Typography and details animate directly on the background (NO CARD BOX)
+ * - Pinned ScrollTrigger scrubbing synchronizes image cards leafing with text details
+ */
+function initCatalogueInteractions() {
+  const catalogueSection = document.getElementById("catalogue")
+  const introCenter = document.getElementById("catalogue-intro-center")
+  const catalogueHud = document.getElementById("catalogue-hud")
+  const splitStage = document.getElementById("catalogue-split-stage")
+  const imageDeck = document.getElementById("catalogue-image-deck")
+  const imageCards = Array.from(
+    document.querySelectorAll<HTMLElement>(".catalogue-image-card"),
+  )
+  const detailPanels = Array.from(
+    document.querySelectorAll<HTMLElement>(".catalogue-detail-panel"),
+  )
+  const indexEl = document.getElementById("active-plate-index")
+  const progressEl = document.getElementById("catalogue-progress-bar")
+  const dots = document.querySelectorAll<HTMLElement>(".deck-dot")
+
+  if (!catalogueSection || imageCards.length === 0) return
+
+  const totalPlates = imageCards.length
+  let currentPlateIndex = 0
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches
+
+  if (prefersReducedMotion) {
+    if (introCenter) introCenter.style.display = "none"
+    if (splitStage) gsap.set(splitStage, { opacity: 1, pointerEvents: "auto" })
+    if (catalogueHud) gsap.set(catalogueHud, { opacity: 1, y: 0 })
+    imageCards.forEach((card, idx) => {
+      gsap.set(card, { opacity: idx <= 3 ? 1 : 0.6 })
+    })
+    if (detailPanels[0]) {
+      detailPanels[0].style.display = "block"
+      gsap.set(detailPanels[0], { opacity: 1, x: 0 })
+    }
+    return
   }
 
-  // Back to Top button in Colophon
-  const scrollToTopBtn = document.getElementById("scroll-to-top-btn")
-  if (scrollToTopBtn) {
-    scrollToTopBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" })
+  // 1. Initial State: Intro is prominent with solid backdrop; Stage and Cards are completely hidden
+  if (introCenter) {
+    gsap.set(introCenter, { opacity: 1, scale: 1, y: 0, visibility: "visible" })
+  }
+  if (catalogueHud) {
+    gsap.set(catalogueHud, { opacity: 0, y: -10 })
+  }
+  if (splitStage) {
+    gsap.set(splitStage, { opacity: 0, pointerEvents: "none" })
+  }
+
+  imageCards.forEach((card, idx) => {
+    gsap.set(card, {
+      zIndex: totalPlates - idx,
+      scale: Math.max(0.88, 1 - idx * 0.03),
+      y: idx * 8,
+      rotation: idx === 0 ? 0 : idx % 2 === 1 ? idx * 0.8 : -idx * 0.8,
+      opacity: 0, // Cards start hidden behind intro
+      transformOrigin: "center bottom",
+    })
+  })
+
+  // Prepare detail panels: hidden and primed to slide in from right
+  detailPanels.forEach((panel) => {
+    panel.style.display = "none"
+    gsap.set(panel, { opacity: 0, x: 70 })
+  })
+
+  function showDetailPanel(targetIdx: number) {
+    const prevPanel = detailPanels[currentPlateIndex]
+    const nextPanel = detailPanels[targetIdx]
+
+    if (prevPanel && prevPanel !== nextPanel) {
+      gsap.to(prevPanel, {
+        opacity: 0,
+        x: -30,
+        duration: 0.25,
+        ease: "power2.in",
+        onComplete: () => {
+          prevPanel.style.display = "none"
+        },
+      })
+    }
+
+    if (nextPanel) {
+      nextPanel.style.display = "block"
+      gsap.fromTo(
+        nextPanel,
+        { opacity: 0, x: 70 },
+        { opacity: 1, x: 0, duration: 0.45, ease: "power3.out", delay: 0.08 },
+      )
+    }
+
+    currentPlateIndex = targetIdx
+  }
+
+  function updateCatalogueHUD(progress: number) {
+    if (progress < 0.08) {
+      if (indexEl) indexEl.textContent = "01"
+      if (progressEl) progressEl.style.width = "16%"
+      return
+    }
+
+    // When progress >= 0.08, plates cycle
+    const plateProgress = Math.max(0, Math.min(1, (progress - 0.08) / 0.92))
+    const activeIdx = Math.min(
+      totalPlates - 1,
+      Math.floor(plateProgress * totalPlates),
+    )
+
+    if (
+      activeIdx !== currentPlateIndex ||
+      detailPanels[activeIdx]?.style.display !== "block"
+    ) {
+      showDetailPanel(activeIdx)
+    }
+
+    if (indexEl) {
+      indexEl.textContent = String(activeIdx + 1).padStart(2, "0")
+    }
+
+    if (progressEl) {
+      progressEl.style.width = `${Math.max(16, progress * 100)}%`
+    }
+
+    dots.forEach((dot, idx) => {
+      if (idx === activeIdx) {
+        dot.classList.remove("bg-neutral-300", "w-2")
+        dot.classList.add("bg-neutral-950", "w-4")
+      } else {
+        dot.classList.remove("bg-neutral-950", "w-4")
+        dot.classList.add("bg-neutral-300", "w-2")
+      }
     })
   }
 
+  // 2. Master Scrub Timeline: Intro Fades -> Cards & HUD Reveal -> Cards Leaf Off Stack & Text Slides In
+  const deckTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: catalogueSection,
+      pin: true,
+      start: "top top",
+      end: () => `+=${(totalPlates + 1) * 1100}`,
+      scrub: 1.0,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        updateCatalogueHUD(self.progress)
+      },
+    },
+  })
+
+  // Phase 1: Centered title & introduction fades away as user scrolls
+  if (introCenter) {
+    deckTl.to(
+      introCenter,
+      {
+        opacity: 0,
+        scale: 0.9,
+        y: -40,
+        duration: 0.7,
+        ease: "power2.inOut",
+      },
+      0,
+    )
+    deckTl.set(introCenter, { visibility: "hidden" }, 0.7)
+  }
+
+  // Phase 1b: Catalogue HUD and Split Stage fade in simultaneously
+  if (catalogueHud) {
+    deckTl.to(
+      catalogueHud,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        ease: "power2.out",
+      },
+      0.35,
+    )
+  }
+
+  if (splitStage) {
+    deckTl.to(
+      splitStage,
+      {
+        opacity: 1,
+        duration: 0.45,
+        ease: "power2.out",
+      },
+      0.35,
+    )
+    deckTl.set(splitStage, { pointerEvents: "auto" }, 0.35)
+  }
+
+  // Fade cards in to physical stack opacities
+  imageCards.forEach((card, idx) => {
+    deckTl.to(
+      card,
+      {
+        opacity: idx <= 3 ? 1 : 0.6,
+        duration: 0.45,
+        ease: "power2.out",
+      },
+      0.35,
+    )
+  })
+
+  // Phase 2: Animate each image card lifting off the deck and next card settling
+  for (let i = 0; i < totalPlates - 1; i++) {
+    const currentCard = imageCards[i]
+    const nextCard = imageCards[i + 1]
+    const startTime = 0.8 + i * 1.2
+
+    deckTl.to(
+      currentCard,
+      {
+        y: -80,
+        scale: 0.92,
+        rotation: i % 2 === 0 ? -6 : 6,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power2.inOut",
+      },
+      startTime,
+    )
+
+    deckTl.to(
+      nextCard,
+      {
+        scale: 1,
+        y: 0,
+        rotation: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+      },
+      startTime + 0.15,
+    )
+  }
+
+  const st = deckTl.scrollTrigger
+
+  function goToPlate(targetIndex: number) {
+    if (!st) return
+    const clamped = Math.max(0, Math.min(totalPlates - 1, targetIndex))
+    const progressRatio = 0.08 + (clamped / (totalPlates - 1)) * 0.92
+    const targetScrollY = st.start + progressRatio * (st.end - st.start)
+    window.scrollTo({ top: targetScrollY + 2, behavior: "smooth" })
+  }
+
+  // Allow clicking on indicator dots to navigate directly to that plate (if present)
+  dots.forEach((dot, idx) => {
+    dot.addEventListener("click", () => goToPlate(idx))
+  })
+
+  // Touch swipe support
+  if (imageDeck) {
+    let touchStartX = 0
+    let touchStartY = 0
+    imageDeck.addEventListener(
+      "touchstart",
+      (e: TouchEvent) => {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX
+          touchStartY = e.touches[0].clientY
+        }
+      },
+      { passive: true },
+    )
+
+    imageDeck.addEventListener(
+      "touchend",
+      (e: TouchEvent) => {
+        if (e.changedTouches.length === 0) return
+        const deltaY = e.changedTouches[0].clientY - touchStartY
+        const deltaX = e.changedTouches[0].clientX - touchStartX
+        if (Math.abs(deltaY) > 40 || Math.abs(deltaX) > 40) {
+          if (deltaY < -40 || deltaX < -40) {
+            goToPlate(currentPlateIndex + 1)
+          } else if (deltaY > 40 || deltaX > 40) {
+            goToPlate(currentPlateIndex - 1)
+          }
+        }
+      },
+      { passive: true },
+    )
+  }
+
   /* -------------------------------------------------------------
-   * EDITORIAL DETAIL LIGHTBOX MODAL
+   * LIGHTBOX MODAL
    * ------------------------------------------------------------- */
   const modal = document.getElementById("artwork-modal")
   const modalCard = document.getElementById("modal-card")
-  const modalBackdrop = document.getElementById("modal-backdrop")
   const modalCloseBtn = document.getElementById("modal-close-btn")
+  const modalBackdrop = document.getElementById("modal-backdrop")
 
   const modalImg = document.getElementById(
     "modal-img",
@@ -680,12 +994,12 @@ function initCatalogueInteractions() {
   const modalEmailBtn = document.getElementById("modal-inquire-email")
 
   function openArtworkModal(artworkId: string) {
-    const artworks = getArtworks()
-    const item = artworks.find((a) => a.id === artworkId)
+    const list = getArtworks()
+    const item = list.find((a) => a.id === artworkId)
     if (!item || !modal || !modalCard) return
 
     if (modalImg) {
-      const card = document.querySelector(`[data-id="${artworkId}"]`)
+      const card = document.querySelector(`[data-artwork-id="${artworkId}"]`)
       const cardImg = card?.querySelector("img")
       modalImg.src = cardImg?.currentSrc || cardImg?.src || item.image
       modalImg.alt = item.alt
@@ -699,18 +1013,17 @@ function initCatalogueInteractions() {
     if (modalQuote) modalQuote.textContent = `"${item.quote}"`
     if (modalDesc) modalDesc.textContent = item.description
 
-    // Set dynamic protected inquiry parameters (no raw plaintext in static markup)
     if (modalWhatsAppBtn) {
       modalWhatsAppBtn.setAttribute(
         "data-message",
-        `Hello, I would like to inquire about "${item.title}" (Nº ${item.number}) from the RabbitHole catalogue.`,
+        `Hello, I would like to inquire about "${item.title}" (Plate Nº ${item.number}) from the RabbitHole catalogue.`,
       )
     }
 
     if (modalEmailBtn) {
       modalEmailBtn.setAttribute(
         "data-subject",
-        `Inquiry: "${item.title}" (Nº ${item.number})`,
+        `Inquiry: "${item.title}" (Plate Nº ${item.number})`,
       )
     }
 
@@ -741,19 +1054,10 @@ function initCatalogueInteractions() {
     })
   }
 
-  // Open modal triggers
   document.querySelectorAll("[data-artwork-id]").forEach((trigger) => {
     trigger.addEventListener("click", (e) => {
       e.stopPropagation()
       const id = trigger.getAttribute("data-artwork-id")
-      if (id) openArtworkModal(id)
-    })
-  })
-
-  document.querySelectorAll(".artwork-frame").forEach((frame) => {
-    frame.addEventListener("click", () => {
-      const article = frame.closest("article")
-      const id = article?.getAttribute("data-id")
       if (id) openArtworkModal(id)
     })
   })
@@ -769,38 +1073,330 @@ function initCatalogueInteractions() {
 }
 
 /**
- * Initializes Fashion & Couture Lightbox Modal interactions:
- * - Reads from #fashion-data
- * - Opens detail view with description, materials, and protected inquiry buttons
+ * Initializes Couture "Runway / Ramp" Motion:
+ * - Pinned runway stage with 6 looks + Bespoke Finale
+ * - Models enter from alternating bottom corners:
+ *   - Look 01 (Odd): Center at start, poses, exits to top-left
+ *   - Look 02 (Even): Enters from bottom-right, poses center, exits to top-right
+ *   - Alternates through all looks!
+ * - Finale card takes the spotlight for bespoke commissions
  */
 function initFashionInteractions() {
+  const fashionSection = document.getElementById("fashion")
+  const introCenter = document.getElementById("fashion-intro-center")
+  const fashionHud = document.getElementById("fashion-hud")
+  const runwayCards = Array.from(
+    document.querySelectorAll<HTMLElement>(".fashion-runway-card"),
+  )
+  const indexEl = document.getElementById("active-runway-index")
+  const progressEl = document.getElementById("runway-progress-bar")
+  const dots = document.querySelectorAll<HTMLElement>(".runway-dot")
+
   const modal = document.getElementById("fashion-modal")
   const modalCard = document.getElementById("fashion-modal-card")
   const modalCloseBtn = document.getElementById("fashion-modal-close-btn")
   const modalBackdrop = document.getElementById("fashion-modal-backdrop")
 
-  if (!modal || !modalCard) return
+  if (!fashionSection || runwayCards.length === 0) return
 
-  const modalImg = document.getElementById(
-    "fashion-modal-img",
-  ) as HTMLImageElement | null
-  const modalNumber = document.getElementById("fashion-modal-number")
-  const modalCollection = document.getElementById("fashion-modal-collection")
-  const modalYear = document.getElementById("fashion-modal-year")
-  const modalTitle = document.getElementById("fashion-modal-title")
-  const modalMaterials = document.getElementById("fashion-modal-materials")
-  const modalSeason = document.getElementById("fashion-modal-season")
-  const modalQuote = document.getElementById("fashion-modal-quote")
-  const modalDesc = document.getElementById("fashion-modal-desc")
-  const modalWhatsAppBtn = document.getElementById(
-    "fashion-modal-inquire-whatsapp",
-  )
-  const modalEmailBtn = document.getElementById("fashion-modal-inquire-email")
+  const totalRunwayCards = runwayCards.length
+  const totalLooks = totalRunwayCards - 1 // 6 looks + 1 finale
 
+  const isMobile = window.innerWidth < 640
+  const wingX = isMobile
+    ? Math.min(140, Math.floor(window.innerWidth * 0.32))
+    : 280
+  const wingY = isMobile ? 260 : 350
+  const exitY = isMobile ? -260 : -340
+
+  // 1. Initial State: Centered Intro is prominent, cards wait in alternating wings, HUD is hidden
+  if (introCenter) {
+    gsap.set(introCenter, { opacity: 1, scale: 1, y: 0 })
+  }
+  if (fashionHud) {
+    gsap.set(fashionHud, { opacity: 0, y: -10 })
+  }
+
+  runwayCards.forEach((card, idx) => {
+    if (idx === 0) {
+      // Look 01 staged to enter center spotlight
+      gsap.set(card, {
+        x: 0,
+        y: 30,
+        rotation: 0,
+        rotateY: 0,
+        scale: 0.9,
+        opacity: 0,
+        zIndex: 20,
+      })
+    } else if (idx < totalLooks) {
+      // Looks 02..06 waiting in alternating entrance wings
+      const isLeft = idx % 2 === 0
+      gsap.set(card, {
+        x: isLeft ? -wingX : wingX,
+        y: wingY,
+        rotation: isLeft ? -6 : 6,
+        rotateY: isLeft ? 30 : -30,
+        scale: 0.85,
+        opacity: 0,
+        zIndex: 10 + idx,
+      })
+    } else {
+      // Finale card waiting below
+      gsap.set(card, {
+        x: 0,
+        y: wingY,
+        rotation: 0,
+        rotateY: 0,
+        scale: 0.85,
+        opacity: 0,
+        zIndex: 30,
+      })
+    }
+  })
+
+  let currentLookIndex = 0
+
+  function updateRunwayHUD(progress: number) {
+    if (progress < 0.06) {
+      if (indexEl) indexEl.textContent = "01"
+      if (progressEl) progressEl.style.width = "14%"
+      return
+    }
+
+    const lookProgress = Math.max(0, Math.min(1, (progress - 0.06) / 0.94))
+    const cardProgress = Math.min(
+      totalRunwayCards - 1,
+      Math.floor(lookProgress * totalRunwayCards),
+    )
+    currentLookIndex = cardProgress
+
+    if (indexEl) {
+      const lookNum = Math.min(totalLooks, cardProgress + 1)
+      indexEl.textContent = String(lookNum).padStart(2, "0")
+    }
+
+    if (progressEl) {
+      progressEl.style.width = `${Math.max(14, progress * 100)}%`
+    }
+
+    dots.forEach((dot, idx) => {
+      if (idx === cardProgress) {
+        dot.classList.remove("bg-neutral-300", "w-2")
+        dot.classList.add("bg-teal-900", "w-4")
+      } else {
+        dot.classList.remove("bg-teal-900", "w-4")
+        dot.classList.add("bg-neutral-300", "w-2")
+      }
+    })
+  }
+
+  // 2. Master Runway Scrub Timeline: Intro Fades -> Models Enter Center -> Pause in Spotlight -> 3D Flip & Exit
+  const runwayTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: fashionSection,
+      pin: true,
+      start: "top top",
+      end: () => `+=${(totalRunwayCards + 1) * 1400}`,
+      scrub: 1.0,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        updateRunwayHUD(self.progress)
+      },
+    },
+  })
+
+  // Phase 1: Centered title & introduction fades away as user scrolls
+  if (introCenter) {
+    runwayTl.to(
+      introCenter,
+      {
+        opacity: 0,
+        scale: 0.9,
+        y: -40,
+        duration: 0.8,
+        ease: "power2.inOut",
+      },
+      0,
+    )
+  }
+
+  if (fashionHud) {
+    runwayTl.to(
+      fashionHud,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        ease: "power2.out",
+      },
+      0.4,
+    )
+  }
+
+  // Phase 2: Look 01 comes in to center stage spotlight with generous pause
+  const firstCard = runwayCards[0]
+  if (firstCard) {
+    runwayTl.to(
+      firstCard,
+      {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+        rotation: 0,
+        rotateY: 0,
+        duration: 0.85,
+        ease: "power2.out",
+      },
+      0.4,
+    )
+
+    // Look 01 pauses in center spotlight, then turns around (flips rotateY -180) and exits to top-left corner
+    runwayTl.to(
+      firstCard,
+      {
+        rotateY: -180,
+        x: -wingX * 0.45,
+        duration: 0.65,
+        ease: "power2.inOut",
+      },
+      2.1,
+    )
+    runwayTl.to(
+      firstCard,
+      {
+        x: -wingX,
+        y: exitY,
+        rotation: -7,
+        scale: 0.82,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.in",
+      },
+      2.7,
+    )
+  }
+
+  // Phase 3: Looks 02 to 06 enter from bottom corners -> pose center -> turn (flip) & exit to top corners
+  for (let i = 1; i < totalLooks; i++) {
+    const card = runwayCards[i]
+    const isLeft = i % 2 === 0
+    const enterTime = 0.4 + i * 2.3
+
+    // Enter from alternating bottom corner into center ramp spotlight
+    runwayTl.fromTo(
+      card,
+      {
+        x: isLeft ? -wingX : wingX,
+        y: wingY,
+        rotation: isLeft ? -6 : 6,
+        rotateY: isLeft ? 30 : -30,
+        scale: 0.85,
+        opacity: 0,
+      },
+      {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        rotateY: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 0.85,
+        ease: "power2.out",
+      },
+      enterTime,
+    )
+
+    // Pose in spotlight, then turn (flip 3D) and exit to top corner wing
+    runwayTl.to(
+      card,
+      {
+        rotateY: isLeft ? -180 : 180,
+        x: isLeft ? -wingX * 0.45 : wingX * 0.45,
+        duration: 0.65,
+        ease: "power2.inOut",
+      },
+      enterTime + 1.65,
+    )
+    runwayTl.to(
+      card,
+      {
+        x: isLeft ? -wingX : wingX,
+        y: exitY,
+        rotation: isLeft ? -7 : 7,
+        scale: 0.82,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power2.in",
+      },
+      enterTime + 2.25,
+    )
+  }
+
+  // Phase 4: Finale card enters center stage and remains
+  const finaleCard = runwayCards[totalLooks]
+  if (finaleCard) {
+    runwayTl.fromTo(
+      finaleCard,
+      {
+        x: 0,
+        y: wingY,
+        rotation: 0,
+        rotateY: 0,
+        scale: 0.85,
+        opacity: 0,
+      },
+      {
+        x: 0,
+        y: 0,
+        scale: 1,
+        opacity: 1,
+        duration: 0.95,
+        ease: "power3.out",
+      },
+      0.4 + totalLooks * 2.3,
+    )
+  }
+
+  const runwaySt = runwayTl.scrollTrigger
+
+  function goToRunwayLook(targetIndex: number) {
+    if (!runwaySt) return
+    const clamped = Math.max(0, Math.min(totalRunwayCards - 1, targetIndex))
+    const progressRatio = 0.06 + (clamped / (totalRunwayCards - 1)) * 0.94
+    const targetScrollY =
+      runwaySt.start + progressRatio * (runwaySt.end - runwaySt.start)
+    window.scrollTo({ top: targetScrollY + 2, behavior: "smooth" })
+  }
+
+  // Allow clicking on runway indicator dots to navigate directly (if present)
+  dots.forEach((dot, idx) => {
+    dot.addEventListener("click", () => goToRunwayLook(idx))
+  })
+
+  // Fashion Detail Modal
   function openFashionModal(workId: string) {
     const works = getFashionWorks()
     const item = works.find((w) => w.id === workId)
     if (!item || !modal || !modalCard) return
+
+    const modalImg = document.getElementById(
+      "fashion-modal-img",
+    ) as HTMLImageElement | null
+    const modalNumber = document.getElementById("fashion-modal-number")
+    const modalCollection = document.getElementById("fashion-modal-collection")
+    const modalYear = document.getElementById("fashion-modal-year")
+    const modalTitle = document.getElementById("fashion-modal-title")
+    const modalMaterials = document.getElementById("fashion-modal-materials")
+    const modalSeason = document.getElementById("fashion-modal-season")
+    const modalQuote = document.getElementById("fashion-modal-quote")
+    const modalDesc = document.getElementById("fashion-modal-desc")
+    const modalWhatsAppBtn = document.getElementById(
+      "fashion-modal-inquire-whatsapp",
+    )
+    const modalEmailBtn = document.getElementById("fashion-modal-inquire-email")
 
     if (modalImg) {
       const card = document.querySelector(`[data-fashion-id="${workId}"]`)
@@ -876,199 +1472,11 @@ function initFashionInteractions() {
 }
 
 /**
- * Refined editorial entrance & scroll animations for the /eshale portfolio page:
- * - Bio masthead, headline, portrait, disciplines, and philosophy entrance
- * - Subtle pointer parallax on portrait (desktop)
- * - Scroll-triggered entrance reveal for Couture section header & look cards
- * - Header elevated shadow state on scroll
- */
-function initEditorialPageAnimations() {
-  const bioSection = document.getElementById("bio")
-  if (!bioSection) return
-
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches
-
-  if (prefersReducedMotion) return
-
-  const isFinePointer = window.matchMedia("(pointer: fine)").matches
-
-  // 1. Header scroll shadow transition
-  const header = document.getElementById("editorial-header")
-  if (header) {
-    const updateHeader = () => {
-      if (window.scrollY > 20) {
-        header.classList.add("shadow-xs", "bg-[#faf9f6]/95")
-      } else {
-        header.classList.remove("shadow-xs", "bg-[#faf9f6]/95")
-      }
-    }
-    window.addEventListener("scroll", updateHeader, { passive: true })
-    updateHeader()
-  }
-
-  // 2. Bio Editorial Entrance Timeline
-  const bioMasthead = bioSection.querySelector(".bio-masthead")
-  const bioHeadline = bioSection.querySelector(".bio-headline")
-  const bioQuote = bioSection.querySelector(".bio-quote")
-  const bioPortraitFrame = bioSection.querySelector(".bio-portrait-frame")
-  const bioPortraitImg = bioSection.querySelector(".bio-portrait-frame img")
-  const bioDisciplines = bioSection.querySelector(".bio-disciplines-card")
-  const bioStatement = bioSection.querySelector(".bio-statement-col")
-  const bioCtaRow = bioSection.querySelector(".bio-cta-row")
-
-  const bioTl = gsap.timeline({ delay: 0.15 })
-
-  if (bioMasthead) {
-    bioTl.fromTo(
-      bioMasthead,
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.65, ease: "power2.out" },
-      0,
-    )
-  }
-
-  if (bioHeadline) {
-    bioTl.fromTo(
-      bioHeadline,
-      { opacity: 0, y: 24 },
-      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
-      0.1,
-    )
-  }
-
-  if (bioQuote) {
-    bioTl.fromTo(
-      bioQuote,
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-      0.2,
-    )
-  }
-
-  if (bioPortraitFrame) {
-    bioTl.fromTo(
-      bioPortraitFrame,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
-      0.22,
-    )
-  }
-
-  if (bioPortraitImg) {
-    bioTl.fromTo(
-      bioPortraitImg,
-      { scale: 1.08 },
-      { scale: 1, duration: 1.4, ease: "power2.out" },
-      0.22,
-    )
-  }
-
-  if (bioDisciplines) {
-    bioTl.fromTo(
-      bioDisciplines,
-      { opacity: 0, y: 16 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-      0.32,
-    )
-  }
-
-  if (bioStatement) {
-    bioTl.fromTo(
-      bioStatement,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
-      0.28,
-    )
-  }
-
-  if (bioCtaRow) {
-    bioTl.fromTo(
-      bioCtaRow,
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
-      0.45,
-    )
-  }
-
-  // 3. Subtle Portrait Parallax on Desktop
-  if (isFinePointer && bioPortraitFrame) {
-    const quickX = gsap.quickTo(bioPortraitFrame, "x", {
-      duration: 0.8,
-      ease: "power2.out",
-    })
-    const quickY = gsap.quickTo(bioPortraitFrame, "y", {
-      duration: 0.8,
-      ease: "power2.out",
-    })
-
-    const onPointerMove = (e: MouseEvent) => {
-      const rect = bioPortraitFrame.getBoundingClientRect()
-      if (rect.bottom < 0 || rect.top > window.innerHeight) return
-      const relX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2)
-      const relY =
-        (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2)
-      quickX(relX * 5)
-      quickY(relY * 5)
-    }
-
-    window.addEventListener("mousemove", onPointerMove, { passive: true })
-  }
-
-  // 4. Scroll-Triggered Reveal for Couture Section (Vol. II)
-  const fashionSection = document.getElementById("fashion")
-  if (fashionSection) {
-    const fashionHeader = fashionSection.querySelector(".fashion-header")
-    const fashionCards = fashionSection.querySelectorAll(".fashion-card")
-
-    if (fashionHeader) {
-      gsap.fromTo(
-        fashionHeader,
-        { opacity: 0, y: 22 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.85,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: fashionSection,
-            start: "top 80%",
-            once: true,
-          },
-        },
-      )
-    }
-
-    if (fashionCards.length > 0) {
-      gsap.fromTo(
-        fashionCards,
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.75,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger:
-              fashionSection.querySelector(".fashion-grid") || fashionSection,
-            start: "top 82%",
-            once: true,
-          },
-        },
-      )
-    }
-  }
-}
-
-/**
  * Handles protected contact interactions:
  * - Direct action triggers decode dynamically and launch WhatsApp/Email on demand
  * - Colophon "Click to View" reveal interactions with animated state change and clipboard copy
  */
 function initProtectedContactHandlers() {
-  // 1. Direct contact action buttons (Dock, Modal, Catalogue Closing Card)
   document.querySelectorAll("[data-contact-action]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault()
@@ -1093,7 +1501,6 @@ function initProtectedContactHandlers() {
     })
   })
 
-  // 2. Colophon Click-to-View reveal groups
   document.querySelectorAll(".protected-contact-group").forEach((group) => {
     const type = group.getAttribute("data-protected-type") as
       "phone" | "email" | null
@@ -1134,7 +1541,6 @@ function initProtectedContactHandlers() {
       })
     }
 
-    // Direct action button (Chat / Send Email)
     if (directBtn) {
       directBtn.addEventListener("click", () => {
         if (type === "phone") {
@@ -1149,7 +1555,6 @@ function initProtectedContactHandlers() {
       })
     }
 
-    // Copy to clipboard with GSAP animation feedback
     if (copyBtn) {
       copyBtn.addEventListener("click", async () => {
         try {
@@ -1169,7 +1574,6 @@ function initProtectedContactHandlers() {
             })
           }
         } catch {
-          // Fallback if clipboard API restricted
           const tempInput = document.createElement("input")
           tempInput.value = fullValue
           document.body.appendChild(tempInput)
